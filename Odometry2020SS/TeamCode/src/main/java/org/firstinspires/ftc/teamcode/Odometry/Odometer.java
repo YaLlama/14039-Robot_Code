@@ -7,6 +7,8 @@ inaccuracy over time so it is usually  coupled with an external positioning syst
 or distance sensors. In our case that shouldn't be needed.
 */
 
+import android.preference.PreferenceActivity;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
@@ -27,10 +29,18 @@ public class Odometer extends Subsystem{
 
     private double rightLastVal;
     private double leftLastVal;
+    private double backLastVal;
+
+    private double rightChange;
+    private double leftChange;
+    private double backChange;
+
     private final double ticksPerCM = 500;
 
+    private boolean isRunning;
+
     public boolean isRunning(){
-        return true; //reee
+        return isRunning;
     }
 
     public void doAction(String action){
@@ -50,15 +60,20 @@ public class Odometer extends Subsystem{
 
         x = 0;
         y = 0;
+        heading = 0;
+
         rightEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
     }
 
     public void updateOdometry(){
 
+    }
+
+    public double getHeading() {
+        return heading;
     }
 
     public double[] getposition() {

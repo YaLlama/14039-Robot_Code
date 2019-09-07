@@ -24,7 +24,6 @@ public class BareAutoL extends LinearOpMode {
 
     private void initialize(){
         // Initialize all objects declared above
-
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
