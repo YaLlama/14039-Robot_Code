@@ -8,9 +8,9 @@ or distance sensors. In our case that shouldn't be needed.
 */
 
 import android.preference.PreferenceActivity;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Subsystem;
+import java.lang.Math;
 
 public class Odometer extends Subsystem{
 
@@ -20,9 +20,10 @@ public class Odometer extends Subsystem{
     private DcMotor leftEnc;
     private DcMotor backEnc;
     //Important variables
-    private double robotCir;
-    private double encdrRad;
-    private final double ticksPerCM = 500;
+    private final double robotCir;
+    private final double robotRad;
+    private final double encdrRad;
+    private final double ticksPerRotation = 500;
     private double encScale;
 
     private double x;
@@ -37,10 +38,15 @@ public class Odometer extends Subsystem{
     private double rightLastVal;
     private double leftLastVal;
     private double backLastVal;
+    private double headingLastVal;
 
     private double rightChange;
     private double leftChange;
     private double backChange;
+    private double headingChange;
+    private double headChangeRad;
+
+    private double vectorAngleLR;
 
     private double xOffestLR;
 
@@ -63,6 +69,7 @@ public class Odometer extends Subsystem{
         this.leftEnc = leftEncoder;
         this.backEnc = backEncoder;
         this.encdrRad = encRadius;
+        this.robotRad = botRadius;
         this.robotCir = 2*Math.PI*botRadius;
 
     }
@@ -73,7 +80,7 @@ public class Odometer extends Subsystem{
         y = 0;
         heading = 0;
 
-        encScale = encdrRad*2*Math.PI/ticksPerCM;
+        encScale = encdrRad*2*Math.PI/ticksPerRotation;
 
         right = 0;
         left = 0;
@@ -82,6 +89,7 @@ public class Odometer extends Subsystem{
         rightChange = 0;
         leftChange = 0;
         backChange = 0;
+        headingChange = 0;
 
         rightLastVal = 0;
         leftLastVal = 0;
@@ -102,22 +110,33 @@ public class Odometer extends Subsystem{
         left = leftEnc.getCurrentPosition() * encScale;
         back = backEnc.getCurrentPosition() * encScale;
 
+        // Calculates direction
         heading = (left - right)/2/robotCir*360;
 
         rightChange = right - rightLastVal;
         leftChange = left - leftLastVal;
         backChange = back - backLastVal;
+        headingChange = heading - headingLastVal;
+        headChangeRad = Math.toRadians(headingChange);
 
-        if(rightChange == leftChange) {
+        //Calculating the position-change-vector from Left+Right encoders
+        if(rightChange == leftChange) { // Robot has gone straight/not moved
+
             posChangeLR[0] = 0;
             posChangeLR[1] = rightChange;
-        }else{
+
+        }else if(rightChange > leftChange) { // Robot has turned to the left
+
+        }else { //Robot has turned to the right
 
         }
+
+        //Calculating the position-change-vector from back encoder
 
         rightLastVal = right;
         leftLastVal = left;
         backLastVal = back;
+        headingLastVal = heading;
 
     }
 
