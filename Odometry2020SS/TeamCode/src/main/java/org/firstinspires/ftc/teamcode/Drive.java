@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
+import org.firstinspires.ftc.teamcode.Odometry.Odometer;
 
 public class Drive extends Subsystem {
 
@@ -10,14 +12,17 @@ public class Drive extends Subsystem {
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    private Odometer Adhameter;
+
     private boolean isRunning;
 
-    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb) {
+    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, Odometer odometree) {
 
         this.frontLeft = Lf;
         this.frontRight = Rf;
         this.backLeft = Lb;
         this.backRight = Rb;
+        this.Adhameter = odometree;
 
     }
 
@@ -58,16 +63,20 @@ public class Drive extends Subsystem {
 
     }
 
+    public void pointInDirection(double direction) {
+        ConstantP turn = new ConstantP(0.6, 30, 0.5);
+        
+
+    }
+
     private void delay(long millis) {
         try{Thread.sleep(millis);}catch(InterruptedException e){e.printStackTrace();}
     }
 
-    @Override
     public boolean isRunning() {
         return isRunning;
     }
 
-    @Override
     public void doAction(String action) {
 
     }

@@ -7,10 +7,6 @@ It corrects by a constant value until the reading gets close enough to the targe
 it switches over to a P controller.
 */
 
-/*
-Created by peakMasculinity 20190531
-*/
-
 public class ConstantP extends Controller {
 
     private double pGain;
