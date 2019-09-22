@@ -22,6 +22,7 @@ public class Odometer extends Subsystem{
     //Important variables
     private final double robotCir;
     private final double robotRad;
+    private final double backRad;
     private final double encdrRad;
     private final double ticksPerRotation = 500;
     private double encScale;
@@ -44,14 +45,15 @@ public class Odometer extends Subsystem{
     private double leftChange;
     private double backChange;
     private double headingChange;
-    private double headChangeRad;
-
-    private double vectorAngleLR;
 
     private double xOffestLR;
+    private double backOmniAdjust;
+    private double backOmniExtra;
 
     private double[] posChangeLR = new double[2];
     private double[] posChangeB = new double[2];
+    private double[] totalPosChange = new double[2];
+    private double[] rotatedMovement = new double[2];
 
     private boolean isRunning;
 
@@ -63,13 +65,14 @@ public class Odometer extends Subsystem{
         //IDK if this feature will be used, might be a pain
     }
 
-    public Odometer(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double botRadius, double encRadius){
+    public Odometer(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double botRadius, double backDistance, double encRadius){
 
         this.rightEnc = rightEncoder;
         this.leftEnc = leftEncoder;
         this.backEnc = backEncoder;
         this.encdrRad = encRadius;
         this.robotRad = botRadius;
+        this.backRad = backDistance;
         this.robotCir = 2*Math.PI*botRadius;
 
     }
@@ -117,21 +120,45 @@ public class Odometer extends Subsystem{
         leftChange = left - leftLastVal;
         backChange = back - backLastVal;
         headingChange = heading - headingLastVal;
-        headChangeRad = Math.toRadians(headingChange);
 
         //Calculating the position-change-vector from Left+Right encoders
         if(rightChange == leftChange) { // Robot has gone straight/not moved
-
             posChangeLR[0] = 0;
             posChangeLR[1] = rightChange;
+        }if(rightChange < leftChange) { //Robot has turned to the left
+            xOffestLR = Math.abs(leftChange * robotRad * 2/(rightChange - leftChange));
+        }else{ //Robot has turned to the right
+            xOffestLR = Math.abs(rightChange * robotRad * 2/(leftChange - rightChange));
+        }
 
-        }else if(rightChange > leftChange) { // Robot has turned to the left
+        if(Math.abs(rightChange) < Math.abs(leftChange)){
+            posChangeLR[0] = cos(headingChange) * (xOffestLR + robotRad) - robotRad - xOffestLR;
+            posChangeLR[1] = sin(headingChange) * (xOffestLR + robotRad);
 
-        }else { //Robot has turned to the right
+        }else if(Math.abs(rightChange) > Math.abs(leftChange)){
+            posChangeLR[0] = xOffestLR + robotRad - (cos(headingChange) * (xOffestLR + robotRad));
+            posChangeLR[1] = sin(headingChange) * (xOffestLR + robotRad);
 
         }
 
         //Calculating the position-change-vector from back encoder
+
+        backOmniAdjust = backRad * 2 * Math.PI * headingChange/360;
+        backOmniExtra = backChange - backOmniAdjust;
+
+        posChangeB[0] = cos(-headingChange) * backOmniExtra;
+        posChangeB[1] = sin(-headingChange) * backOmniExtra;
+
+        //Add the two vectors together
+        totalPosChange[0] = posChangeLR[0] + posChangeB[0];
+        totalPosChange[1] = posChangeLR[1] + posChangeB[1];
+
+        //Rotate the vector;
+        rotatedMovement[0] = totalPosChange[0] * cos(headingLastVal) - totalPosChange[1] * sin(headingLastVal);
+        rotatedMovement[1] = totalPosChange[0] * sin(headingLastVal) + totalPosChange[1] * cos(headingLastVal);
+
+        x = x + rotatedMovement[0];
+        y = y + rotatedMovement[1];
 
         rightLastVal = right;
         leftLastVal = left;
@@ -151,6 +178,14 @@ public class Odometer extends Subsystem{
 
         return position;
 
+    }
+
+    public double cos(double theta) {
+        return Math.cos(Math.toRadians(theta));
+    }
+
+    public double sin(double theta) {
+        return Math.sin(Math.toRadians(theta));
     }
 
 }
