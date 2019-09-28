@@ -48,6 +48,7 @@ public class Drive extends Subsystem {
 
         isRunning = true;
         initialize();
+        delay(600);
         frontRight.setPower(0.4);
         delay(500);
         frontRight.setPower(0);
