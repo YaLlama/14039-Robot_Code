@@ -16,14 +16,14 @@ public class PID extends Controller {
 
     }
 
-    public double getCorrection(double target, double currentError) {
+    public double getCorrection(double target, double current) {
 
         double error;
         double P, I, D;
         double errorSlope;
         double correction;
 
-        error = target - currentError;
+        error = target - current;
 
         //Proportional term
         P = error * pGain;

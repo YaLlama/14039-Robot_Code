@@ -24,7 +24,7 @@ public class Odometer extends Subsystem{
     private final double robotRad;
     private final double backRad;
     private final double encdrRad;
-    private final double ticksPerRotation = 500;
+    private final double ticksPerRotation = 500; //How many ticks are in 1 revolution of the encoder
     private double encScale;
 
     private double x;
@@ -55,16 +55,13 @@ public class Odometer extends Subsystem{
     private double[] totalPosChange = new double[2];
     private double[] rotatedMovement = new double[2];
 
-    private boolean isRunning;
-
-    public boolean isRunning(){
-        return isRunning;
-    }
+    public boolean isRunning;
 
     public void doAction(String action){
         //IDK if this feature will be used, might be a pain
     }
 
+    //3 Encoder objects, The distance from the L and R Omni's to the center, The distance from the back Omni to the center, the radius of the Omni
     public Odometer(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double botRadius, double backDistance, double encRadius){
 
         this.rightEnc = rightEncoder;
@@ -154,8 +151,8 @@ public class Odometer extends Subsystem{
         totalPosChange[1] = posChangeLR[1] + posChangeB[1];
 
         //Rotate the vector;
-        rotatedMovement[0] = totalPosChange[0] * cos(headingLastVal) - totalPosChange[1] * sin(headingLastVal);
-        rotatedMovement[1] = totalPosChange[0] * sin(headingLastVal) + totalPosChange[1] * cos(headingLastVal);
+        rotatedMovement[0] = totalPosChange[0] * cos(-headingLastVal) - totalPosChange[1] * sin(-headingLastVal);
+        rotatedMovement[1] = totalPosChange[0] * sin(-headingLastVal) + totalPosChange[1] * cos(-headingLastVal);
 
         x = x + rotatedMovement[0];
         y = y + rotatedMovement[1];
@@ -180,11 +177,11 @@ public class Odometer extends Subsystem{
 
     }
 
-    public double cos(double theta) {
+    private double cos(double theta) {
         return Math.cos(Math.toRadians(theta));
     }
 
-    public double sin(double theta) {
+    private double sin(double theta) {
         return Math.sin(Math.toRadians(theta));
     }
 
