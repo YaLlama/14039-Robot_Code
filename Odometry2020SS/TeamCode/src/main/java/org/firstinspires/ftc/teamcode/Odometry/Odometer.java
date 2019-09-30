@@ -26,6 +26,7 @@ public class Odometer extends Subsystem{
     private final double encdrRad;
     private final double ticksPerRotation = 500; //How many ticks are in 1 revolution of the encoder
     private double encScale;
+    private double gear;
 
     private double x;
     private double y;
@@ -62,7 +63,7 @@ public class Odometer extends Subsystem{
     }
 
     //3 Encoder objects, The distance from the L and R Omni's to the center, The distance from the back Omni to the center, the radius of the Omni
-    public Odometer(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double botRadius, double backDistance, double encRadius){
+    public Odometer(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double botRadius, double backDistance, double encRadius, double gearRatio){
 
         this.rightEnc = rightEncoder;
         this.leftEnc = leftEncoder;
@@ -71,6 +72,7 @@ public class Odometer extends Subsystem{
         this.robotRad = botRadius;
         this.backRad = backDistance;
         this.robotCir = 2*Math.PI*botRadius;
+        this.gear = gearRatio;
 
     }
 
@@ -80,7 +82,7 @@ public class Odometer extends Subsystem{
         y = 0;
         heading = 0;
 
-        encScale = encdrRad*2*Math.PI/ticksPerRotation;
+        encScale = encdrRad*2*Math.PI/ticksPerRotation/gear;
 
         right = 0;
         left = 0;

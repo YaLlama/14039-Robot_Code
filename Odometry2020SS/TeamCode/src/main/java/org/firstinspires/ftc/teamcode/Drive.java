@@ -84,14 +84,19 @@ public class Drive extends Subsystem {
 
     public void strafeToPoint(double x, double y) {
         PID hold = new PID(0.1, 0.02, 0.2, 15, 0.5);
+        double heading = Adhameter.getHeading();
 
         double xDiff = x - Adhameter.getposition()[0];
         double yDiff = y - Adhameter.getposition()[1];
+        double direction;
+        if(xDiff == 0) {
+            direction = 0;
+        }else {
+            direction = 90 - Math.toDegrees(Math.atan(yDiff/xDiff));
+        }
 
-        double heading = Adhameter.getHeading();
-
-        double xAdjusted = xDiff * cos(-heading) - yDiff * sin(-heading);
-        double yAdjusted = xDiff * sin(-heading) + yDiff * cos(-heading);
+        double directionRel = direction - heading;
+        double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 
         if(isRunning) {
             //placehold
