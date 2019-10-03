@@ -84,23 +84,48 @@ public class Drive extends Subsystem {
 
     public void strafeToPoint(double x, double y) {
         PID hold = new PID(0.1, 0.02, 0.2, 15, 0.5);
-        double heading = Adhameter.getHeading();
 
-        double xDiff = x - Adhameter.getposition()[0];
-        double yDiff = y - Adhameter.getposition()[1];
+        double heading;
+        double xDiff;
+        double yDiff;
         double direction;
-        if(xDiff == 0) {
-            direction = 0;
-        }else {
-            direction = 90 - Math.toDegrees(Math.atan(yDiff/xDiff));
+        double directionRel;
+        double distance = 1000000;
+        double xComp;
+        double yComp;
+        double xCorrect;
+        double yCorrect;
+
+        while(distance > 5) {
+            if(isRunning) {
+                heading = Adhameter.getHeading();
+
+                xDiff = x - Adhameter.getposition()[0];
+                yDiff = y - Adhameter.getposition()[1];
+
+                if(xDiff == 0) {
+                    direction = 0;
+                }else {
+                    direction = 90 - Math.toDegrees(Math.atan(yDiff/xDiff));
+                }
+
+                directionRel = heading + 90 - direction;
+                distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+                xComp = cos(directionRel) * distance;
+                yComp = sin(directionRel) * distance;
+
+                xCorrect = hold.getCorrection(xComp, 0);
+                yCorrect = hold.getCorrection(yComp, 0);
+
+                frontLeft.setPower(yCorrect/2 + xCorrect);
+                backLeft.setPower(yCorrect/2 - xCorrect);
+                backRight.setPower(yCorrect/2 + xCorrect);
+                frontRight.setPower(yCorrect/2 - xCorrect);
+
+            }
         }
 
-        double directionRel = direction - heading;
-        double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-
-        if(isRunning) {
-            //placehold
-        }
     }
 
     private void delay(int millis) {

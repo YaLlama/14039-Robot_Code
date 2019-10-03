@@ -43,22 +43,24 @@ public class OdometryTest extends LinearOpMode {
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
+
+        telemetry.addData("Heading ", Adham.getHeading());
+        telemetry.addData("X ", Adham.getposition()[0]);
+        telemetry.addData("Y ", Adham.getposition()[1]);
+
     }
 
     @Override
     public void runOpMode() {
         // Wait for the game to start (driver presses PLAY)
         initialize();
-
-        telemetry.addData("Heading ", Adham.getHeading());
-        telemetry.addData("X ", Adham.getposition()[0]);
-        telemetry.addData("Y ", Adham.getposition()[1]);
+        waitForStart();
 
         while(opModeIsActive()) {
             telemetry.update();
         }
 
-        waitForStart();
+        Adham.isRunning = false;
 
         //Make sure nothing is still using the thread
     }
