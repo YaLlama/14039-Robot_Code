@@ -27,10 +27,6 @@ public class EncoderTest extends LinearOpMode {
         // Initialize all objects declared above
         Encoder = hardwareMap.dcMotor.get("Encoder");
 
-        Encoder.setDirection(DcMotorSimple.Direction.FORWARD);
-        Encoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Encoder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
     }
@@ -39,12 +35,12 @@ public class EncoderTest extends LinearOpMode {
     public void runOpMode() {
         // Wait for the game to start (driver presses PLAY)
         initialize();
+        waitForStart();
 
         telemetry.addData("Encoder Value ", Encoder.getCurrentPosition());
 
-        waitForStart();
-
         while(opModeIsActive()) {
+            telemetry.addData("Encoder Value ", Encoder.getCurrentPosition());
             telemetry.update();
         }
 
