@@ -58,6 +58,10 @@ public class Odometer extends Subsystem{
 
     public boolean isRunning = true;
 
+    public double rightEncDir = 1;
+    public double leftEncDir = -1;
+    public double backEncDir = -1;
+
     public void doAction(String action){
         //IDK if this feature will be used, might be a pain
     }
@@ -96,12 +100,9 @@ public class Odometer extends Subsystem{
         rightLastVal = 0;
         leftLastVal = 0;
         backLastVal = 0;
-
-        rightEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        
         rightEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     }
@@ -110,9 +111,9 @@ public class Odometer extends Subsystem{
 
         if(isRunning){
 
-            right = rightEnc.getCurrentPosition() * encScale;
-            left = leftEnc.getCurrentPosition() * encScale;
-            back = backEnc.getCurrentPosition() * encScale;
+            right = rightEnc.getCurrentPosition() * encScale * rightEncDir;
+            left = leftEnc.getCurrentPosition() * encScale * leftEncDir;
+            back = backEnc.getCurrentPosition() * encScale * backEncDir;
 
             // Calculates direction
             heading = (left - right)/2/robotCir*360;
