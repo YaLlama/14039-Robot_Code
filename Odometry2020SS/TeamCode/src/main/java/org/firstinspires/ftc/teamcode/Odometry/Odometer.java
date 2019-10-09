@@ -24,9 +24,9 @@ public class Odometer extends Subsystem{
     private final double robotRad;
     private final double backRad;
     private final double encdrRad;
-    private final double ticksPerRotation = 500; //How many ticks are in 1 revolution of the encoder
+    private final double ticksPerRotation = 1450; //How many ticks are in 1 revolution of the encoder
     private double encScale;
-    private double gear;
+    private double gear; //How many times does the Omni spin for each spin of the encoder
 
     private double x;
     private double y;
@@ -86,7 +86,7 @@ public class Odometer extends Subsystem{
         y = 0;
         heading = 0;
 
-        encScale = encdrRad*2*Math.PI/ticksPerRotation/gear;
+        encScale = encdrRad*2*Math.PI/ticksPerRotation*gear;
 
         right = 0;
         left = 0;

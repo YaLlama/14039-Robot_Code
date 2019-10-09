@@ -16,9 +16,9 @@ public class EncoderTest extends LinearOpMode {
     private DcMotor Encoder1;
     private DcMotor Encoder2;
 
-    private final double omniRadius = 1.84; //Radius of Omni wheels
-    private final double gearing = 4/3; //How many times does the Omni spin for each spin of the encoder
-    private final double ticksPerRotation = 360;
+    private final double omniRadius = 1.85; //Radius of Omni wheels
+    private final double gearing = 1.5; //How many times does the Omni spin for each spin of the encoder
+    private final double ticksPerRotation = 1450;
 
     public void doAction(Subsystem s, String action){
         while(s.isRunning){
@@ -27,6 +27,9 @@ public class EncoderTest extends LinearOpMode {
     }
 
     private void initialize(){
+        telemetry.addData("Status: ", "Initializing");
+        telemetry.update();
+
         // Initialize all objects declared above
         Encoder = hardwareMap.dcMotor.get("RightEncoder");
         Encoder1 = hardwareMap.dcMotor.get("LeftEncoder");
@@ -42,7 +45,7 @@ public class EncoderTest extends LinearOpMode {
         initialize();
         waitForStart();
 
-        double encScale = omniRadius*2*Math.PI/ticksPerRotation/gearing;
+        double encScale = omniRadius*2*Math.PI/ticksPerRotation*gearing;
 
         Encoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Encoder1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -50,9 +53,10 @@ public class EncoderTest extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            telemetry.addData("Right Encoder Value ", Encoder.getCurrentPosition() * encScale);
-            telemetry.addData("Left Encoder Value ", Encoder1.getCurrentPosition() * encScale);
-            telemetry.addData("Back Encoder Value ", Encoder2.getCurrentPosition() * encScale);
+            telemetry.addData("Right Encoder Value ", Encoder.getCurrentPosition());
+            telemetry.addData("Right Encoder Distance CM ", Encoder.getCurrentPosition() * encScale);
+            telemetry.addData("Left Encoder Value ", Encoder1.getCurrentPosition());
+            telemetry.addData("Back Encoder Value ", Encoder2.getCurrentPosition());
             telemetry.update();
 
         }

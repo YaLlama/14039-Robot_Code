@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
@@ -15,17 +12,14 @@ import org.firstinspires.ftc.teamcode.Subsystem;
 public class OdometryTest extends LinearOpMode {
 
     // Declare OpMode members.
-    private DcMotor rightEnc;
-    private DcMotor leftEnc;
-    private DcMotor backEnc;
+    private DcMotor EncoderRight;
+    private DcMotor EncoderLeft;
+    private DcMotor EncoderBack;
 
-    private final double robotRadius = 14; //Distance from center to left and right Omni's
-    private final double robotBackRadius = 17; //Distance from center to back Omni
-    private final double omniRadius = 1.84; //Radius of Omni wheels
-    private final double gearing = 4/3; //How many times does the Omni spin for each spin of the encoder
-
-
-    private Odometer Adham = new Odometer(rightEnc, leftEnc, backEnc, robotRadius, robotBackRadius, omniRadius, gearing);
+    private final double omniRadius = 1.85; //Radius of Omni wheels
+    private final double gearing = 1.5; //How many times does the Omni spin for each spin of the encoder
+    private final double robotRadius = 97.28;
+    private final double distanceBack = 12.4;
 
     public void doAction(Subsystem s, String action){
         while(s.isRunning){
@@ -34,33 +28,40 @@ public class OdometryTest extends LinearOpMode {
     }
 
     private void initialize(){
-        // Initialize all objects declared above
-        rightEnc = hardwareMap.dcMotor.get("RightEncoder");
-        leftEnc = hardwareMap.dcMotor.get("LeftEncoder");
-        backEnc = hardwareMap.dcMotor.get("BackEncoder");
+        telemetry.addData("Status: ", "Initializing");
+        telemetry.update();
 
-        Adham.initializeOdometry();
+        // Initialize all objects declared above
+        EncoderRight = hardwareMap.dcMotor.get("RightEncoder");
+        EncoderLeft = hardwareMap.dcMotor.get("LeftEncoder");
+        EncoderBack = hardwareMap.dcMotor.get("BackEncoder");
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
-
-        telemetry.addData("Heading ", Adham.getHeading());
-        telemetry.addData("X ", Adham.getposition()[0]);
-        telemetry.addData("Y ", Adham.getposition()[1]);
-
     }
 
     @Override
     public void runOpMode() {
         // Wait for the game to start (driver presses PLAY)
         initialize();
+
+        Odometer Adham = new Odometer(EncoderRight, EncoderLeft, EncoderBack, robotRadius, distanceBack, omniRadius, gearing);
+        Adham.initializeOdometry();
+
         waitForStart();
+        telemetry.addData("Status: ", "Running");
+        telemetry.update();
 
         while(opModeIsActive()) {
-            telemetry.update();
-        }
 
-        Adham.isRunning = false;
+            Adham.updateOdometry();
+
+            telemetry.addData("Heading ", Adham.getHeading());
+            telemetry.addData("X ", Adham.getposition()[0]);
+            telemetry.addData("Y ", Adham.getposition()[1]);
+            telemetry.update();
+
+        }
 
         //Make sure nothing is still using the thread
     }
