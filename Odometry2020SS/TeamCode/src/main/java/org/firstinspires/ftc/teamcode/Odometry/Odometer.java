@@ -100,7 +100,7 @@ public class Odometer extends Subsystem{
         rightLastVal = 0;
         leftLastVal = 0;
         backLastVal = 0;
-        
+
         rightEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
