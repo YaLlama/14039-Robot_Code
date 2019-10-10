@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.firstinspires.ftc.teamcode.Odometry.Odometer;
 
 import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
@@ -30,59 +32,64 @@ public class Drive extends Subsystem {
 
     public void initialize() {
 
-        isRunning = true;
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         frontRight.setPower(0);
         frontLeft.setPower(0);
         backRight.setPower(0);
         backLeft.setPower(0);
 
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
-        isRunning = false;
+        backRight.setDirection(DcMotor.Direction.REVERSE);
+
+        isRunning = true;
 
     }
 
     public void testMotors() {
 
-        isRunning = true;
-        initialize();
-        delay(600);
-        frontRight.setPower(0.4);
-        delay(500);
-        frontRight.setPower(0);
-        frontLeft.setPower(0.4);
-        delay(500);
-        frontLeft.setPower(0);
-        backRight.setPower(0.4);
-        delay(500);
-        backRight.setPower(0);
-        backLeft.setPower(0.4);
-        delay(500);
-        backLeft.setPower(0);
-        isRunning = false;
-
+        if(isRunning){
+            delay(600);
+            frontRight.setPower(0.4);
+            delay(500);
+            frontRight.setPower(0);
+            frontLeft.setPower(0.4);
+            delay(500);
+            frontLeft.setPower(0);
+            backRight.setPower(0.4);
+            delay(500);
+            backRight.setPower(0);
+            backLeft.setPower(0.4);
+            delay(500);
+            backLeft.setPower(0);
+        }
     }
 
     public void pointInDirection(double direction) {
         ConstantP turn = new ConstantP(0.6, 30, 0.5);
-        double correction = turn.getCorrection(direction, Adhameter.getHeading());
+        double correction = 10;
         if(isRunning) {
-            while (Math.abs(correction) < 0.1) {
+            while (Math.abs(correction) > 0.1) {
+                correction = turn.getCorrection(direction, Adhameter.getHeading());
+
                 frontLeft.setPower(correction);
                 backLeft.setPower(correction);
 
                 frontRight.setPower(-correction);
                 backRight.setPower(-correction);
 
-                correction = turn.getCorrection(direction, Adhameter.getHeading());
                 Adhameter.updateOdometry();
             }
         }
     }
 
     public void strafeToPoint(double x, double y) {
+
         PID hold = new PID(0.1, 0.02, 0.2, 15, 0.5);
 
         double heading;
@@ -90,7 +97,7 @@ public class Drive extends Subsystem {
         double yDiff;
         double direction;
         double directionRel;
-        double distance = 1000000;
+        double distance = 6;
         double xComp;
         double yComp;
         double xCorrect;
@@ -98,6 +105,8 @@ public class Drive extends Subsystem {
 
         while(distance > 5) {
             if(isRunning) {
+                Adhameter.updateOdometry();
+
                 heading = Adhameter.getHeading();
 
                 xDiff = x - Adhameter.getposition()[0];

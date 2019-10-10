@@ -1,24 +1,26 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.teamcode.Odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
 import org.firstinspires.ftc.teamcode.Subsystem;
 
-@Autonomous(name="Encoder Test", group="Linear Opmode")
+@Autonomous(name="Odometer Test", group="Linear Opmode")
 
-public class EncoderTest extends LinearOpMode {
+public class OdometryTest extends LinearOpMode {
 
     // Declare OpMode members.
-    private DcMotor Encoder;
-    private DcMotor Encoder1;
-    private DcMotor Encoder2;
+    private DcMotor EncoderRight;
+    private DcMotor EncoderLeft;
+    private DcMotor EncoderBack;
 
     private final double omniRadius = 1.85; //Radius of Omni wheels
     private final double gearing = 1.5; //How many times does the Omni spin for each spin of the encoder
-    private final double ticksPerRotation = 1450;
+    private final double robotRadius = 9.5;
+    private final double distanceBack = 31;
+
+    private Odometer Adham;
 
     public void doAction(Subsystem s, String action){
         while(s.isRunning){
@@ -31,9 +33,12 @@ public class EncoderTest extends LinearOpMode {
         telemetry.update();
 
         // Initialize all objects declared above
-        Encoder = hardwareMap.dcMotor.get("RightEncoder");
-        Encoder1 = hardwareMap.dcMotor.get("LeftEncoder");
-        Encoder2 = hardwareMap.dcMotor.get("BackEncoder");
+        EncoderRight = hardwareMap.dcMotor.get("RightEncoder");
+        EncoderLeft = hardwareMap.dcMotor.get("LeftEncoder");
+        EncoderBack = hardwareMap.dcMotor.get("BackEncoder");
+
+        Adham = new Odometer(EncoderRight, EncoderLeft, EncoderBack, robotRadius, distanceBack, omniRadius, gearing);
+        Adham.initializeOdometry();
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
@@ -44,19 +49,16 @@ public class EncoderTest extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         initialize();
         waitForStart();
-
-        double encScale = omniRadius*2*Math.PI/ticksPerRotation*gearing;
-
-        Encoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Encoder1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Encoder2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        telemetry.addData("Status: ", "Running");
+        telemetry.update();
 
         while(opModeIsActive()) {
 
-            telemetry.addData("Right Encoder Value ", Encoder.getCurrentPosition());
-            telemetry.addData("Right Encoder Distance CM ", Encoder.getCurrentPosition() * encScale);
-            telemetry.addData("Left Encoder Value ", Encoder1.getCurrentPosition());
-            telemetry.addData("Back Encoder Value ", Encoder2.getCurrentPosition());
+            Adham.updateOdometry();
+
+            telemetry.addData("Heading ", Adham.getHeading());
+            telemetry.addData("X ", Adham.getposition()[0]);
+            telemetry.addData("Y ", Adham.getposition()[1]);
             telemetry.update();
 
         }
