@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -14,11 +15,6 @@ public class OdometryTest extends LinearOpMode {
     private DcMotor EncoderRight;
     private DcMotor EncoderLeft;
     private DcMotor EncoderBack;
-
-    private final double omniRadius = 1.85; //Radius of Omni wheels
-    private final double gearing = 1.5; //How many times does the Omni spin for each spin of the encoder
-    private final double robotRadius = 9.5;
-    private final double distanceBack = 31;
 
     private OdometerRadians Adham;
 
@@ -37,7 +33,7 @@ public class OdometryTest extends LinearOpMode {
         EncoderLeft = hardwareMap.dcMotor.get("LeftEncoder");
         EncoderBack = hardwareMap.dcMotor.get("BackEncoder");
 
-        Adham = new OdometerRadians(EncoderRight, EncoderLeft, EncoderBack, robotRadius, distanceBack, omniRadius, gearing);
+        Adham = new OdometerRadians(EncoderRight, EncoderLeft, EncoderBack, 1, -1 ,-1);
         Adham.initializeOdometry();
 
         telemetry.addData("Status: ", "Initialized");

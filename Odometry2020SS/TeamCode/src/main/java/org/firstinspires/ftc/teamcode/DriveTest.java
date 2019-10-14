@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
-import org.firstinspires.ftc.teamcode.Odometry.Odometer;
+import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 @Autonomous(name="Drive Test", group="Linear Opmode")
 
@@ -17,12 +17,7 @@ public class DriveTest extends LinearOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
 
-    private final double omniRadius = 1.85; //Radius of Omni wheels
-    private final double gearing = 1.5; //How many times does the Omni spin for each spin of the encoder
-    private final double robotRadius = 9.5;
-    private final double distanceBack = 31;
-
-    private Odometer Adham;
+    private OdometerRadians Adham;
     private Drive Driver;
 
     public void doAction(Subsystem s, String action){
@@ -41,7 +36,7 @@ public class DriveTest extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("BackEncoder");
         RightBack = hardwareMap.dcMotor.get("RightBack");
 
-        Adham = new Odometer(RightFront, LeftFront, LeftBack, robotRadius, distanceBack, omniRadius, gearing);
+        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, -1);
         Adham.initializeOdometry();
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham);
@@ -60,30 +55,9 @@ public class DriveTest extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        pointInDirection(90);
+        Driver.pointInDirection(90);
 
         //Make sure nothing is still using the thread
-    }
-
-    private void pointInDirection(double direction) {
-        ConstantP turn = new ConstantP(0.6, 30, 0.5);
-        double correction = 10;
-        if(opModeIsActive()) {
-            while (Math.abs(correction) > 0.4) {
-                correction = turn.getCorrection(direction, Adham.getHeading());
-
-                LeftFront.setPower(correction);
-                LeftBack.setPower(correction);
-
-                RightFront.setPower(-correction);
-                RightBack.setPower(-correction);
-
-                telemetry.addData("correction ", correction);
-                telemetry.update();
-
-                Adham.updateOdometry();
-            }
-        }
     }
 
     private void delay(int millis) {

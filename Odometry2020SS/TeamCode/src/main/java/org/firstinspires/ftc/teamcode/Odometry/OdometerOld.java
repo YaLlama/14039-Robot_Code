@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Subsystem;
 import java.lang.Math;
 
-public class Odometer extends Subsystem{
+public class OdometerOld extends Subsystem{
 
     //Declare all objects needed for Odometry
     //Optical encoders
@@ -67,7 +67,7 @@ public class Odometer extends Subsystem{
     }
 
     //3 Encoder objects, The distance from the L and R Omni's to the center, The distance from the back Omni to the center, the radius of the Omni
-    public Odometer(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double botRadius, double backDistance, double encRadius, double gearRatio){
+    public OdometerOld(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double botRadius, double backDistance, double encRadius, double gearRatio){
 
         this.rightEnc = rightEncoder;
         this.leftEnc = leftEncoder;
