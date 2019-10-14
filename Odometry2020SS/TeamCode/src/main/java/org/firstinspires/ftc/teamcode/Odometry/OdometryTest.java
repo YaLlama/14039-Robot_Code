@@ -20,7 +20,7 @@ public class OdometryTest extends LinearOpMode {
     private final double robotRadius = 9.5;
     private final double distanceBack = 31;
 
-    private Odometer Adham;
+    private OdometerRadians Adham;
 
     public void doAction(Subsystem s, String action){
         while(s.isRunning){
@@ -37,7 +37,7 @@ public class OdometryTest extends LinearOpMode {
         EncoderLeft = hardwareMap.dcMotor.get("LeftEncoder");
         EncoderBack = hardwareMap.dcMotor.get("BackEncoder");
 
-        Adham = new Odometer(EncoderRight, EncoderLeft, EncoderBack, robotRadius, distanceBack, omniRadius, gearing);
+        Adham = new OdometerRadians(EncoderRight, EncoderLeft, EncoderBack, robotRadius, distanceBack, omniRadius, gearing);
         Adham.initializeOdometry();
 
         telemetry.addData("Status: ", "Initialized");
@@ -56,7 +56,7 @@ public class OdometryTest extends LinearOpMode {
 
             Adham.updateOdometry();
 
-            telemetry.addData("Heading ", Adham.getHeading());
+            telemetry.addData("Heading ", Adham.getHeadingDeg());
             telemetry.addData("X ", Adham.getposition()[0]);
             telemetry.addData("Y ", Adham.getposition()[1]);
             telemetry.update();

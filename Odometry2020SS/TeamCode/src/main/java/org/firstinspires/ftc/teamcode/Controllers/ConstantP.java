@@ -26,7 +26,7 @@ public class ConstantP extends Controller {
         double error = target - current;
         double correction;
         if(Math.abs(error) > pRange) {
-            correction = constnt * error / Math.abs(error); //getting the right sign for correction
+            correction = constnt * (error / Math.abs(error)); //getting the right sign for correction
         }else {
             correction = error * pGain;
         }

@@ -77,11 +77,11 @@ public class Drive extends Subsystem {
             while (Math.abs(correction) > 0.1) {
                 correction = turn.getCorrection(direction, Adhameter.getHeading());
 
-                frontLeft.setPower(correction);
-                backLeft.setPower(correction);
+                frontLeft.setPower(-correction);
+                backLeft.setPower(-correction);
 
-                frontRight.setPower(-correction);
-                backRight.setPower(-correction);
+                frontRight.setPower(correction);
+                backRight.setPower(correction);
 
                 Adhameter.updateOdometry();
             }
