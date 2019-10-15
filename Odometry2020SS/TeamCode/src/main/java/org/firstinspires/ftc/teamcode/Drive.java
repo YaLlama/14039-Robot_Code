@@ -98,6 +98,12 @@ public class Drive extends Subsystem {
 
     }
 
+    public void goToPoint(double x, double y) {
+        double Xdiff
+        double direction = Math.toDegrees(Math.atan())
+        pointInDirection();
+    }
+
     private void delay(int millis) {
         for(int x=0;x<millis; x++) {
             Adhameter.updateOdometry();
