@@ -145,11 +145,45 @@ public class Drive extends Subsystem {
                 double xCorrect = holdX.getCorrection(0, XD);
                 double yCorrect = holdY.getCorrection(0, YD);
                 
-                frontLeft.setPower(-correction);
-                backLeft.setPower(-correction);
+                frontLeft.setPower(xCorrect + yCorrect);
+                backLeft.setPower(-xCorrect + yCorrect);
 
-                frontRight.setPower(correction);
-                backRight.setPower(correction);
+                frontRight.setPower(-xCorrect + yCorrect);
+                backRight.setPower(xCorrect + yCorrect);
+                
+    }
+            
+    public void strafeToPointOrient(double x, double y, double heading, double threshold) {
+
+        PID holdX = new PID(0.1, 0.02, 0.2, 15, 0.5);
+        PID holdY = new PID(0.1, 0.02, 0.2, 15, 0.5);
+        Proportional orient = new Proportional(0.02, 0.2);
+        
+        double Xdiff = x - Adhameter.getposition()[0];
+        double Ydiff = y - Adhameter.getposition()[1];
+        double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+        
+        while(distance > threshold) {
+            if (opmode.opModeIsActive()) {
+                
+                Xdiff = y - Adhameter.getposition()[0];
+                Ydiff = x - Adhameter.getposition()[1];
+                distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+                
+                double h = Adhameter.getHeadingDeg();
+                
+                double XD = cos(-h) * xdiff - sin(-h) * ydiff;
+                double YD = sin(-h) * xdiff + cos(-h) * ydiff;
+                
+                double hCorrect = orient.getCorrection(heading, h)
+                double xCorrect = holdX.getCorrection(0, XD);
+                double yCorrect = holdY.getCorrection(0, YD);
+                
+                frontLeft.setPower(xCorrect + yCorrect - hCorrect);
+                backLeft.setPower(-xCorrect + yCorrect - hCorrect);
+
+                frontRight.setPower(-xCorrect + yCorrect + hCorrect);
+                backRight.setPower(xCorrect + yCorrect + hCorrect);
                 
     }
 
