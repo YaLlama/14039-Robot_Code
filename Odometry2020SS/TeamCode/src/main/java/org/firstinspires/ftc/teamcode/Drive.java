@@ -151,6 +151,9 @@ public class Drive extends Subsystem {
 
                 frontRight.setPower(-xCorrect + yCorrect);
                 backRight.setPower(xCorrect + yCorrect);
+
+                Adhameter.updateOdometry();
+
             }else {
                 break;
             }
@@ -188,6 +191,9 @@ public class Drive extends Subsystem {
 
                 frontRight.setPower(-xCorrect + yCorrect + hCorrect);
                 backRight.setPower(xCorrect + yCorrect + hCorrect);
+
+                Adhameter.updateOdometry();
+
             }else {
                 break;
             }
@@ -217,6 +223,7 @@ public class Drive extends Subsystem {
                 backRight.setPower(0.5);
 
                 delay(500);
+                Adhameter.updateOdometry();
 
             }else {
                 break;
@@ -248,6 +255,8 @@ public class Drive extends Subsystem {
 
                 frontRight.setPower(power + correct);
                 backRight.setPower(power + correct);
+
+                Adhameter.updateOdometry();
 
             }else {
                 break;
