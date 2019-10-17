@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -18,15 +19,18 @@ public class Drive extends Subsystem {
 
     private OdometerRadians Adhameter;
 
+    private LinearOpMode opmode;
+
     public boolean isRunning;
 
-    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, OdometerRadians Odometree) {
+    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, OdometerRadians Odometree, LinearOpMode oppy) {
 
         this.frontLeft = Lf;
         this.frontRight = Rf;
         this.backLeft = Lb;
         this.backRight = Rb;
         this.Adhameter = Odometree;
+        this.opmode = oppy;
 
     }
 
@@ -53,7 +57,7 @@ public class Drive extends Subsystem {
 
     public void testMotors() {
 
-        if(isRunning){
+        if(opmode.opModeIsActive()){
             delay(600);
             frontRight.setPower(0.4);
             delay(500);
@@ -75,7 +79,7 @@ public class Drive extends Subsystem {
         double correction = 10;
 
         while (Math.abs(correction) > 0.1) {
-            if(isRunning) {
+            if(opmode.opModeIsActive()) {
                 correction = turn.getCorrection(direction, Adhameter.getHeadingDeg());
 
                 frontLeft.setPower(-correction);
@@ -92,16 +96,65 @@ public class Drive extends Subsystem {
         }
     }
 
+    public void pointInDirectionRough(double direction, double threshold) {
+
+        ConstantP turn = new ConstantP(0.6, 30, 0.5);
+        double correction = 10;
+        double error = Adhameter.getHeadingDeg() - direction;
+
+        while (Math.abs(error) > threshold) {
+            if(opmode.opModeIsActive()) {
+                correction = turn.getCorrection(direction, Adhameter.getHeadingDeg());
+
+                frontLeft.setPower(-correction);
+                backLeft.setPower(-correction);
+
+                frontRight.setPower(correction);
+                backRight.setPower(correction);
+
+                error = Adhameter.getHeadingDeg() - direction;
+                Adhameter.updateOdometry();
+
+            }else{
+                break;
+            }
+        }
+    }
+
     public void strafeToPoint(double x, double y) {
 
         PID hold = new PID(0.1, 0.02, 0.2, 15, 0.5);
 
     }
 
-    public void goToPoint(double x, double y) {
-        double Xdiff
-        double direction = Math.toDegrees(Math.atan())
-        pointInDirection();
+    public void goToPointSlow(double x, double y, double threshold) {
+
+        double Xdiff = y - Adhameter.getposition()[0];
+        double Ydiff = x - Adhameter.getposition()[1];
+        double direction;
+        double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+
+        while (distance > threshold) {
+            if (opmode.opModeIsActive()) {
+
+                Xdiff = y - Adhameter.getposition()[0];
+                Ydiff = x - Adhameter.getposition()[1];
+                direction = Math.toDegrees(Math.atan(Ydiff/Xdiff));
+                distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+
+                pointInDirectionRough((direction-90), 8);
+
+                frontLeft.setPower(0.5);
+                backLeft.setPower(0.5);
+                frontRight.setPower(0.5);
+                backRight.setPower(0.5);
+
+                delay(500);
+
+            }else {
+                break;
+            }
+        }
     }
 
     private void delay(int millis) {
@@ -112,7 +165,6 @@ public class Drive extends Subsystem {
     }
 
     public void doAction(String action) {
-
     }
 
     private double cos(double theta) {

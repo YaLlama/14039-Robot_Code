@@ -8,6 +8,8 @@ or distance sensors. In our case that shouldn't be needed.
 */
 
 import android.preference.PreferenceActivity;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Subsystem;
 import java.lang.Math;
@@ -67,12 +69,14 @@ public class OdometerRadians extends Subsystem{
     private double leftEncDir;
     private double backEncDir;
 
+    private LinearOpMode opmode;
+
     public void doAction(String action){
         //IDK if this feature will be used, might be a pain
     }
 
     //3 Encoder objects, The distance from the L and R Omni's to the center, The distance from the back Omni to the center, the radius of the Omni
-    public OdometerRadians(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double RD, double LD, double BD){
+    public OdometerRadians(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double RD, double LD, double BD, LinearOpMode oppy){
 
         this.rightEnc = rightEncoder;
         this.leftEnc = leftEncoder;
@@ -81,6 +85,8 @@ public class OdometerRadians extends Subsystem{
         this.rightEncDir = RD;
         this.leftEncDir = LD;
         this.backEncDir = BD;
+
+        this.opmode = oppy;
 
     }
 
@@ -114,7 +120,7 @@ public class OdometerRadians extends Subsystem{
 
     public void updateOdometry(){
 
-        if(isRunning){
+        if(opmode.opModeIsActive()){
 
             right = rightEnc.getCurrentPosition() * encScale * rightEncDir;
             left = leftEnc.getCurrentPosition() * encScale * leftEncDir;

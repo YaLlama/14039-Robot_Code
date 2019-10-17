@@ -36,10 +36,10 @@ public class DriveTest extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("BackEncoder");
         RightBack = hardwareMap.dcMotor.get("RightBack");
 
-        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, -1);
+        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, -1, this);
         Adham.initializeOdometry();
 
-        Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham);
+        Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
 
         telemetry.addData("Status: ", "Initialized");
