@@ -121,16 +121,36 @@ public class Drive extends Subsystem {
         }
     }
 
-    public void strafeToPoint(double x, double y) {
+    public void strafeToPoint(double x, double y, double threshold) {
 
-        PID hold = new PID(0.1, 0.02, 0.2, 15, 0.5);
-
+        PID holdX = new PID(0.1, 0.02, 0.2, 15, 0.5);
+        PID holdY = new PID(0.1, 0.02, 0.2, 15, 0.5);
+        
+        double Xdiff = x - Adhameter.getposition()[0];
+        double Ydiff = y - Adhameter.getposition()[1];
+        double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+        
+        while(distance > threshold) {
+            if (opmode.opModeIsActive()) {
+                
+                Xdiff = y - Adhameter.getposition()[0];
+                Ydiff = x - Adhameter.getposition()[1];
+                distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+                
+                double h = Adhameter.getHeadingDeg();
+                
+                double XD = cos(-h) * xdiff - sin(-h) * ydiff;
+                double YD = sin(-h) * xdiff + cos(-h) * ydiff;
+                
+                double xCorrect = holdX.getCorrection(0, XD);
+                double yCorrect = holdY.getCorrection(0, YD);
+                
     }
 
     public void goToPointSlow(double x, double y, double threshold) {
 
-        double Xdiff = y - Adhameter.getposition()[0];
-        double Ydiff = x - Adhameter.getposition()[1];
+        double Xdiff = x - Adhameter.getposition()[0];
+        double Ydiff = y - Adhameter.getposition()[1];
         double direction;
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
 
