@@ -10,9 +10,8 @@ public class Proportional extends Controller {
     private double pGain;
     private double lim;
 
-    public Proportional(double constant, double limit) {
-
-        this.constnt = constant;
+    public Proportional(double p_Gain, double limit) {
+        
         this.pGain = p_Gain;
         this.pRange = p_Range;
 
