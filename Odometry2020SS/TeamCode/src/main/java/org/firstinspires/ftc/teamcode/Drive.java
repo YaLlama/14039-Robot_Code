@@ -145,6 +145,12 @@ public class Drive extends Subsystem {
                 double xCorrect = holdX.getCorrection(0, XD);
                 double yCorrect = holdY.getCorrection(0, YD);
                 
+                frontLeft.setPower(-correction);
+                backLeft.setPower(-correction);
+
+                frontRight.setPower(correction);
+                backRight.setPower(correction);
+                
     }
 
     public void goToPointSlow(double x, double y, double threshold) {
