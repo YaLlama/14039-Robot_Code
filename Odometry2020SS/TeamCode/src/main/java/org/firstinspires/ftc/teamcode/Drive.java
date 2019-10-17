@@ -150,7 +150,10 @@ public class Drive extends Subsystem {
 
                 frontRight.setPower(-xCorrect + yCorrect);
                 backRight.setPower(xCorrect + yCorrect);
-                
+            }else {
+                break;
+            }
+        }
     }
             
     public void strafeToPointOrient(double x, double y, double heading, double threshold) {
@@ -184,7 +187,10 @@ public class Drive extends Subsystem {
 
                 frontRight.setPower(-xCorrect + yCorrect + hCorrect);
                 backRight.setPower(xCorrect + yCorrect + hCorrect);
-                
+            }else {
+                break;
+            }
+        }
     }
 
     public void goToPointSlow(double x, double y, double threshold) {
