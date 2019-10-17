@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.Controllers.Proportional;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
@@ -139,8 +140,8 @@ public class Drive extends Subsystem {
                 
                 double h = Adhameter.getHeadingDeg();
                 
-                double XD = cos(-h) * xdiff - sin(-h) * ydiff;
-                double YD = sin(-h) * xdiff + cos(-h) * ydiff;
+                double XD = cos(-h) * Xdiff - sin(-h) * Ydiff;
+                double YD = sin(-h) * Xdiff + cos(-h) * Ydiff;
                 
                 double xCorrect = holdX.getCorrection(0, XD);
                 double yCorrect = holdY.getCorrection(0, YD);
@@ -175,10 +176,10 @@ public class Drive extends Subsystem {
                 
                 double h = Adhameter.getHeadingDeg();
                 
-                double XD = cos(-h) * xdiff - sin(-h) * ydiff;
-                double YD = sin(-h) * xdiff + cos(-h) * ydiff;
+                double XD = cos(-h) * Xdiff - sin(-h) * Ydiff;
+                double YD = sin(-h) * Xdiff + cos(-h) * Ydiff;
                 
-                double hCorrect = orient.getCorrection(heading, h)
+                double hCorrect = orient.getCorrection(heading, h);
                 double xCorrect = holdX.getCorrection(0, XD);
                 double yCorrect = holdY.getCorrection(0, YD);
                 
@@ -216,6 +217,37 @@ public class Drive extends Subsystem {
                 backRight.setPower(0.5);
 
                 delay(500);
+
+            }else {
+                break;
+            }
+        }
+    }
+
+    public void goToPointFast(double x, double y, double power, double threshold) {
+
+        double Xdiff = x - Adhameter.getposition()[0];
+        double Ydiff = y - Adhameter.getposition()[1];
+        double direction;
+        double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+
+        Proportional orient = new Proportional(0.02, 0.9 - power);
+
+        while (distance > threshold) {
+            if (opmode.opModeIsActive()) {
+
+                Xdiff = y - Adhameter.getposition()[0];
+                Ydiff = x - Adhameter.getposition()[1];
+                direction = Math.toDegrees(Math.atan(Ydiff/Xdiff));
+                distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
+
+                double correct = orient.getCorrection(direction, Adhameter.getHeadingDeg());
+
+                frontLeft.setPower(power - correct);
+                backLeft.setPower(power - correct);
+
+                frontRight.setPower(power + correct);
+                backRight.setPower(power + correct);
 
             }else {
                 break;
