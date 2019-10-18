@@ -13,7 +13,7 @@ public class Proportional extends Controller {
     public Proportional(double p_Gain, double limit) {
         
         this.pGain = p_Gain;
-        this.pRange = p_Range;
+        this.lim = limit;
 
     }
 
@@ -25,7 +25,7 @@ public class Proportional extends Controller {
         if(correction > lim) {
             correction = lim;
         }
-        if(correction < -lim {
+        if(correction < -lim) {
             correction = -lim;
         }
         

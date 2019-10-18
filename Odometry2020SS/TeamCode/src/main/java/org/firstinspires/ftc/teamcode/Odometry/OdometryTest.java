@@ -53,8 +53,8 @@ public class OdometryTest extends LinearOpMode {
             Adham.updateOdometry();
 
             telemetry.addData("Heading ", Adham.getHeadingDeg());
-            telemetry.addData("X ", Adham.getposition()[0]);
-            telemetry.addData("Y ", Adham.getposition()[1]);
+            telemetry.addData("X ", Adham.getPosition()[0]);
+            telemetry.addData("Y ", Adham.getPosition()[1]);
             telemetry.update();
 
         }

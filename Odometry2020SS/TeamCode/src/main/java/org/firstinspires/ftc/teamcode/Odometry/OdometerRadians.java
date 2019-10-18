@@ -197,10 +197,10 @@ public class OdometerRadians extends Subsystem{
         return Math.toDegrees(heading) % 360;
     }
 
-    public double[] getposition() {
+    public double[] getPosition() {
 
         position[0] = x;
-        position[1] = y;
+        position[1] = -y;
 
         return position;
 

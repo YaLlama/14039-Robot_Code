@@ -124,33 +124,34 @@ public class Drive extends Subsystem {
 
     public void strafeToPoint(double x, double y, double threshold) {
 
-        PID holdX = new PID(0.1, 0.02, 0.2, 15, 0.5);
-        PID holdY = new PID(0.1, 0.02, 0.2, 15, 0.5);
+        PID holdX = new PID(0.016, 0.002, 0.01, 7, 0.3);
+        PID holdY = new PID(0.016, 0.002, 0.01, 7, 0.3);
         
-        double Xdiff = x - Adhameter.getposition()[0];
-        double Ydiff = y - Adhameter.getposition()[1];
+        double Xdiff = x - Adhameter.getPosition()[0];
+        double Ydiff = y - Adhameter.getPosition()[1];
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
         
         while(distance > threshold) {
             if (opmode.opModeIsActive()) {
                 
-                Xdiff = y - Adhameter.getposition()[0];
-                Ydiff = x - Adhameter.getposition()[1];
+                Xdiff = y - Adhameter.getPosition()[0];
+                Ydiff = x - Adhameter.getPosition()[1];
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
                 
                 double h = Adhameter.getHeadingDeg();
-                
+
+                // Rotating our movement vector so that it's relative to the robot
                 double XD = cos(-h) * Xdiff - sin(-h) * Ydiff;
                 double YD = sin(-h) * Xdiff + cos(-h) * Ydiff;
                 
                 double xCorrect = holdX.getCorrection(0, XD);
-                double yCorrect = holdY.getCorrection(0, YD);
+                double yCorrect = holdY.getCorrection(0, YD) / 2;
                 
-                frontLeft.setPower(xCorrect + yCorrect);
-                backLeft.setPower(-xCorrect + yCorrect);
+                frontLeft.setPower(-xCorrect - yCorrect);
+                backLeft.setPower(xCorrect - yCorrect);
 
-                frontRight.setPower(-xCorrect + yCorrect);
-                backRight.setPower(xCorrect + yCorrect);
+                frontRight.setPower(xCorrect - yCorrect);
+                backRight.setPower(-xCorrect - yCorrect);
 
                 Adhameter.updateOdometry();
 
@@ -162,19 +163,19 @@ public class Drive extends Subsystem {
             
     public void strafeToPointOrient(double x, double y, double heading, double threshold) {
 
-        PID holdX = new PID(0.1, 0.02, 0.2, 15, 0.5);
-        PID holdY = new PID(0.1, 0.02, 0.2, 15, 0.5);
+        PID holdX = new PID(0.016, 0.002, 0.01, 7, 0.3);
+        PID holdY = new PID(0.016, 0.002, 0.01, 7, 0.3);
         Proportional orient = new Proportional(0.02, 0.2);
         
-        double Xdiff = x - Adhameter.getposition()[0];
-        double Ydiff = y - Adhameter.getposition()[1];
+        double Xdiff = x - Adhameter.getPosition()[0];
+        double Ydiff = y - Adhameter.getPosition()[1];
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
         
         while(distance > threshold) {
             if (opmode.opModeIsActive()) {
                 
-                Xdiff = y - Adhameter.getposition()[0];
-                Ydiff = x - Adhameter.getposition()[1];
+                Xdiff = y - Adhameter.getPosition()[0];
+                Ydiff = x - Adhameter.getPosition()[1];
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
                 
                 double h = Adhameter.getHeadingDeg();
@@ -184,13 +185,13 @@ public class Drive extends Subsystem {
                 
                 double hCorrect = orient.getCorrection(heading, h);
                 double xCorrect = holdX.getCorrection(0, XD);
-                double yCorrect = holdY.getCorrection(0, YD);
+                double yCorrect = holdY.getCorrection(0, YD) / 2;
                 
-                frontLeft.setPower(xCorrect + yCorrect - hCorrect);
-                backLeft.setPower(-xCorrect + yCorrect - hCorrect);
+                frontLeft.setPower(-xCorrect + yCorrect - hCorrect);
+                backLeft.setPower(xCorrect + yCorrect - hCorrect);
 
-                frontRight.setPower(-xCorrect + yCorrect + hCorrect);
-                backRight.setPower(xCorrect + yCorrect + hCorrect);
+                frontRight.setPower(xCorrect + yCorrect + hCorrect);
+                backRight.setPower(-xCorrect + yCorrect + hCorrect);
 
                 Adhameter.updateOdometry();
 
@@ -202,16 +203,16 @@ public class Drive extends Subsystem {
 
     public void goToPointSlow(double x, double y, double threshold) {
 
-        double Xdiff = x - Adhameter.getposition()[0];
-        double Ydiff = y - Adhameter.getposition()[1];
+        double Xdiff = x - Adhameter.getPosition()[0];
+        double Ydiff = y - Adhameter.getPosition()[1];
         double direction;
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
 
         while (distance > threshold) {
             if (opmode.opModeIsActive()) {
 
-                Xdiff = y - Adhameter.getposition()[0];
-                Ydiff = x - Adhameter.getposition()[1];
+                Xdiff = y - Adhameter.getPosition()[0];
+                Ydiff = x - Adhameter.getPosition()[1];
                 direction = Math.toDegrees(Math.atan(Ydiff/Xdiff));
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
 
@@ -233,8 +234,8 @@ public class Drive extends Subsystem {
 
     public void goToPointFast(double x, double y, double power, double threshold) {
 
-        double Xdiff = x - Adhameter.getposition()[0];
-        double Ydiff = y - Adhameter.getposition()[1];
+        double Xdiff = x - Adhameter.getPosition()[0];
+        double Ydiff = y - Adhameter.getPosition()[1];
         double direction;
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
 
@@ -243,8 +244,8 @@ public class Drive extends Subsystem {
         while (distance > threshold) {
             if (opmode.opModeIsActive()) {
 
-                Xdiff = y - Adhameter.getposition()[0];
-                Ydiff = x - Adhameter.getposition()[1];
+                Xdiff = y - Adhameter.getPosition()[0];
+                Ydiff = x - Adhameter.getPosition()[1];
                 direction = Math.toDegrees(Math.atan(Ydiff/Xdiff));
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
 

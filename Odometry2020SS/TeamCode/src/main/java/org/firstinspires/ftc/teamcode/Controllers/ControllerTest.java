@@ -1,15 +1,14 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Controllers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
-@Autonomous(name="Drive Test", group="Linear Opmode")
+@Autonomous(name="Controller Test", group="Linear Opmode")
 
-public class DriveTest extends LinearOpMode {
+public class ControllerTest extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor RightFront;
@@ -18,13 +17,7 @@ public class DriveTest extends LinearOpMode {
     private DcMotor LeftBack;
 
     private OdometerRadians Adham;
-    private Drive Driver;
-
-    public void doAction(Subsystem s, String action){
-        while(s.isRunning){
-            s.doAction(action);
-        }
-    }
+    private PID pid;
 
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
@@ -36,11 +29,10 @@ public class DriveTest extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("BackEncoder");
         RightBack = hardwareMap.dcMotor.get("RightBack");
 
-        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, 1, 1, -1, this);
+        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, -1, this);
         Adham.initializeOdometry();
 
-        Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
-        Driver.initialize();
+        pid = new PID(0.016, 0.001, 0.01, 5, 0.4);
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
@@ -55,14 +47,18 @@ public class DriveTest extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
+        double current;
+        double target = 0;
+
         while(opModeIsActive()) {
-            telemetry.addData("x ", Adham.getPosition()[0]);
-            telemetry.addData("y ", Adham.getPosition()[1]);
-            telemetry.addData("heading ", Adham.getHeadingDeg());
+
+            current = Adham.getPosition()[0];
+
+            telemetry.addData("current ", current);
+            telemetry.addData("correction ", pid.getCorrection(target, current));
             telemetry.update();
 
             Adham.updateOdometry();
-
         }
 
         //Make sure nothing is still using the thread
