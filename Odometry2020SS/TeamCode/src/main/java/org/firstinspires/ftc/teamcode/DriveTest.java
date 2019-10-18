@@ -61,9 +61,11 @@ public class DriveTest extends LinearOpMode {
     }
 
     private void delay(int millis) {
-        for(int x=0;x<millis; x++) {
-            Adham.updateOdometry();
-            try{Thread.sleep(1);}catch(InterruptedException e){e.printStackTrace();}
+        if (opModeIsActive()) {
+            for(int x=0;x<millis; x++) {
+                Adham.updateOdometry();
+                try{Thread.sleep(1);}catch(InterruptedException e){e.printStackTrace();}
+            }
         }
     }
 
