@@ -142,14 +142,14 @@ public class OdometerRadians extends Subsystem{
                 posChangeLR[0] = 0;
                 posChangeLR[1] = rightChange;
 
-            }else if(Math.abs(rightChange) < Math.abs(leftChange)){ // Case 1, l is on inside
+            }else if(Math.abs(rightChange) < Math.abs(leftChange)){ //l is on inside - verified
 
                 xOffestLR = leftChange/headingChange;
 
                 posChangeLR[0] = Math.cos(headingChange) * (xOffestLR + robotRad) - (xOffestLR + robotRad);
                 posChangeLR[1] = Math.sin(headingChange) * (xOffestLR + robotRad);
 
-            }else{ // Case 2, r is on inside
+            }else{ //r is on inside - verified
 
                 headingChange = headingLastVal - heading;
 
@@ -157,7 +157,6 @@ public class OdometerRadians extends Subsystem{
 
                 posChangeLR[0] = (xOffestLR + robotRad) - Math.cos(headingChange) * (xOffestLR + robotRad);
                 posChangeLR[1] = Math.sin(headingChange) * (xOffestLR + robotRad);
-
 
             }
 
@@ -186,6 +185,7 @@ public class OdometerRadians extends Subsystem{
             leftLastVal = left;
             backLastVal = back;
             headingLastVal = heading;
+
         }
     }
 
@@ -197,10 +197,14 @@ public class OdometerRadians extends Subsystem{
         return Math.toDegrees(heading) % 360;
     }
 
+    public double getHeadingAbsoluteDeg() {
+        return Math.toDegrees(heading);
+    }
+
     public double[] getPosition() {
 
         position[0] = x;
-        position[1] = -y;
+        position[1] = y;
 
         return position;
 

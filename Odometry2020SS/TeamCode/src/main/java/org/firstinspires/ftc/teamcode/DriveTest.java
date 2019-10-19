@@ -59,6 +59,10 @@ public class DriveTest extends LinearOpMode {
             telemetry.addData("x ", Adham.getPosition()[0]);
             telemetry.addData("y ", Adham.getPosition()[1]);
             telemetry.addData("heading ", Adham.getHeadingDeg());
+            telemetry.addData("Absolute Heading ", Adham.getHeadingAbsoluteDeg());
+
+            telemetry.addData("RightEncoder ", RightFront.getCurrentPosition());
+            telemetry.addData("LeftEncoder ", LeftFront.getCurrentPosition());
             telemetry.update();
 
             Adham.updateOdometry();
