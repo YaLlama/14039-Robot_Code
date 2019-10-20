@@ -189,6 +189,18 @@ public class OdometerRadians extends Subsystem{
         }
     }
 
+    public double getRightReading() {
+        return right;
+    }
+
+    public double getLeftReading() {
+        return left;
+    }
+
+    public double getBackReading() {
+        return back;
+    }
+
     public double getHeadingRad() {
         return heading;
     }

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
 @TeleOp(name="Bare Teleop", group="Linear Opmode")
+@Disabled
 
 public class BareTeleOpL extends LinearOpMode {
 
@@ -26,9 +27,13 @@ public class BareTeleOpL extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         initialize();
         waitForStart();
+        telemetry.addData("Status", "Running");
+        telemetry.update();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+
 
             telemetry.update();
         }

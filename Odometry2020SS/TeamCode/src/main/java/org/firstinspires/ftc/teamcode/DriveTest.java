@@ -31,12 +31,12 @@ public class DriveTest extends LinearOpMode {
         telemetry.update();
 
         // Initialize all objects declared above
-        RightFront = hardwareMap.dcMotor.get("RightEncoder");
-        LeftFront = hardwareMap.dcMotor.get("LeftEncoder");
-        LeftBack = hardwareMap.dcMotor.get("BackEncoder");
-        RightBack = hardwareMap.dcMotor.get("RightBack");
+        RightFront = hardwareMap.dcMotor.get("rightEncoder");
+        LeftFront = hardwareMap.dcMotor.get("leftEncoder");
+        LeftBack = hardwareMap.dcMotor.get("backEncoder");
+        RightBack = hardwareMap.dcMotor.get("rightBack");
 
-        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, 1, 1, -1, this);
+        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
         Adham.initializeOdometry();
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
@@ -61,8 +61,9 @@ public class DriveTest extends LinearOpMode {
             telemetry.addData("heading ", Adham.getHeadingDeg());
             telemetry.addData("Absolute Heading ", Adham.getHeadingAbsoluteDeg());
 
-            telemetry.addData("RightEncoder ", RightFront.getCurrentPosition());
-            telemetry.addData("LeftEncoder ", LeftFront.getCurrentPosition());
+            telemetry.addData("RightEncoder ", Adham.getRightReading());
+            telemetry.addData("LeftEncoder ", Adham.getLeftReading());
+            telemetry.addData("BackEncoder ", Adham.getBackReading());
             telemetry.update();
 
             Adham.updateOdometry();

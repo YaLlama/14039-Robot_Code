@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Subsystem;
 
 
 @Autonomous(name="Bare Bones Auto", group="Linear Opmode")
+@Disabled
 
 public class BareAutoL extends LinearOpMode {
 

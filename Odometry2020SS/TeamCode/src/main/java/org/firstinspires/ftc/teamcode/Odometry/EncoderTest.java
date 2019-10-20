@@ -32,9 +32,9 @@ public class EncoderTest extends LinearOpMode {
         telemetry.update();
 
         // Initialize all objects declared above
-        Encoder = hardwareMap.dcMotor.get("RightEncoder");
-        Encoder1 = hardwareMap.dcMotor.get("LeftEncoder");
-        Encoder2 = hardwareMap.dcMotor.get("BackEncoder");
+        Encoder = hardwareMap.dcMotor.get("rightEncoder");
+        Encoder1 = hardwareMap.dcMotor.get("leftEncoder");
+        Encoder2 = hardwareMap.dcMotor.get("backEncoder");
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();

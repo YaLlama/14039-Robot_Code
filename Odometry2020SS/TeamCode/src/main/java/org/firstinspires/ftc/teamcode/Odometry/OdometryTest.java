@@ -29,11 +29,11 @@ public class OdometryTest extends LinearOpMode {
         telemetry.update();
 
         // Initialize all objects declared above
-        EncoderRight = hardwareMap.dcMotor.get("RightEncoder");
-        EncoderLeft = hardwareMap.dcMotor.get("LeftEncoder");
-        EncoderBack = hardwareMap.dcMotor.get("BackEncoder");
+        EncoderRight = hardwareMap.dcMotor.get("rightEncoder");
+        EncoderLeft = hardwareMap.dcMotor.get("leftEncoder");
+        EncoderBack = hardwareMap.dcMotor.get("backEncoder");
 
-        Adham = new OdometerRadians(EncoderRight, EncoderLeft, EncoderBack, -1, 1 ,-1, this);
+        Adham = new OdometerRadians(EncoderRight, EncoderLeft, EncoderBack, 1, -1 ,1, this);
         Adham.initializeOdometry();
 
         telemetry.addData("Status: ", "Initialized");
