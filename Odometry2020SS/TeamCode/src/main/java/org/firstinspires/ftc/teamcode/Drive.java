@@ -76,7 +76,7 @@ public class Drive extends Subsystem {
     }
 
     public void pointInDirection(double direction) { // Verified
-        ConstantP turn = new ConstantP(0.6, 30, 0.5);
+        ConstantP turn = new ConstantP(0.5, 20, 0.025);
         double correction = 10;
 
         while (Math.abs(correction) > 0.1) {
@@ -124,8 +124,8 @@ public class Drive extends Subsystem {
 
     public void strafeToPoint(double x, double y, double threshold) {
 
-        PID holdX = new PID(0.016, 0.002, 0.01, 7, 0.3);
-        PID holdY = new PID(0.016, 0.002, 0.01, 7, 0.3);
+        PID holdX = new PID(0.03, 0.002, 0.01, 7, 0.4);
+        PID holdY = new PID(0.03, 0.002, 0.01, 7, 0.4);
         
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
@@ -134,8 +134,8 @@ public class Drive extends Subsystem {
         while(distance > threshold) {
             if (opmode.opModeIsActive()) {
                 
-                Xdiff = y - Adhameter.getPosition()[0];
-                Ydiff = x - Adhameter.getPosition()[1];
+                Xdiff = x - Adhameter.getPosition()[0];
+                Ydiff = y - Adhameter.getPosition()[1];
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
                 
                 double h = Adhameter.getHeadingDeg();
@@ -145,7 +145,7 @@ public class Drive extends Subsystem {
                 double YD = sin(-h) * Xdiff + cos(-h) * Ydiff;
                 
                 double xCorrect = holdX.getCorrection(0, XD);
-                double yCorrect = holdY.getCorrection(0, YD) / 2;
+                double yCorrect = holdY.getCorrection(0, YD);
                 
                 frontLeft.setPower(-xCorrect - yCorrect);
                 backLeft.setPower(xCorrect - yCorrect);
@@ -163,9 +163,9 @@ public class Drive extends Subsystem {
             
     public void strafeToPointOrient(double x, double y, double heading, double threshold) {
 
-        PID holdX = new PID(0.016, 0.002, 0.01, 7, 0.3);
-        PID holdY = new PID(0.016, 0.002, 0.01, 7, 0.3);
-        Proportional orient = new Proportional(0.02, 0.3);
+        PID holdX = new PID(0.04, 0.002, 0.01, 7, 0.3);
+        PID holdY = new PID(0.04, 0.002, 0.01, 7, 0.3);
+        Proportional orient = new Proportional(0.02, 0.4);
         
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
@@ -174,8 +174,8 @@ public class Drive extends Subsystem {
         while(distance > threshold) {
             if (opmode.opModeIsActive()) {
                 
-                Xdiff = y - Adhameter.getPosition()[0];
-                Ydiff = x - Adhameter.getPosition()[1];
+                Xdiff = x - Adhameter.getPosition()[0];
+                Ydiff = y - Adhameter.getPosition()[1];
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
                 
                 double h = Adhameter.getHeadingDeg();
@@ -185,7 +185,7 @@ public class Drive extends Subsystem {
                 
                 double hCorrect = orient.getCorrection(heading, h);
                 double xCorrect = holdX.getCorrection(0, XD);
-                double yCorrect = holdY.getCorrection(0, YD) / 2;
+                double yCorrect = holdY.getCorrection(0, YD);
                 
                 frontLeft.setPower(-xCorrect - yCorrect - hCorrect);
                 backLeft.setPower(xCorrect - yCorrect - hCorrect);
