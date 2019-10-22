@@ -55,20 +55,7 @@ public class DriveTest extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        while(opModeIsActive()) {
-            telemetry.addData("x ", Adham.getPosition()[0]);
-            telemetry.addData("y ", Adham.getPosition()[1]);
-            telemetry.addData("heading ", Adham.getHeadingDeg());
-            telemetry.addData("Absolute Heading ", Adham.getHeadingAbsoluteDeg());
-
-            telemetry.addData("RightEncoder ", Adham.getRightReading());
-            telemetry.addData("LeftEncoder ", Adham.getLeftReading());
-            telemetry.addData("BackEncoder ", Adham.getBackReading());
-            telemetry.update();
-
-            Adham.updateOdometry();
-
-        }
+        Driver.pointInDirection(90);
 
         //Make sure nothing is still using the thread
     }

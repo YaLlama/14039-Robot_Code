@@ -75,7 +75,7 @@ public class Drive extends Subsystem {
         }
     }
 
-    public void pointInDirection(double direction) {
+    public void pointInDirection(double direction) { // Verified
         ConstantP turn = new ConstantP(0.6, 30, 0.5);
         double correction = 10;
 
@@ -97,7 +97,7 @@ public class Drive extends Subsystem {
         }
     }
 
-    public void pointInDirectionRough(double direction, double threshold) {
+    public void pointInDirectionRough(double direction, double threshold) { // Verified
 
         ConstantP turn = new ConstantP(0.6, 30, 0.5);
         double correction = 10;
@@ -165,7 +165,7 @@ public class Drive extends Subsystem {
 
         PID holdX = new PID(0.016, 0.002, 0.01, 7, 0.3);
         PID holdY = new PID(0.016, 0.002, 0.01, 7, 0.3);
-        Proportional orient = new Proportional(0.02, 0.2);
+        Proportional orient = new Proportional(0.02, 0.3);
         
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
@@ -187,11 +187,11 @@ public class Drive extends Subsystem {
                 double xCorrect = holdX.getCorrection(0, XD);
                 double yCorrect = holdY.getCorrection(0, YD) / 2;
                 
-                frontLeft.setPower(-xCorrect + yCorrect - hCorrect);
-                backLeft.setPower(xCorrect + yCorrect - hCorrect);
+                frontLeft.setPower(-xCorrect - yCorrect - hCorrect);
+                backLeft.setPower(xCorrect - yCorrect - hCorrect);
 
-                frontRight.setPower(xCorrect + yCorrect + hCorrect);
-                backRight.setPower(-xCorrect + yCorrect + hCorrect);
+                frontRight.setPower(xCorrect - yCorrect + hCorrect);
+                backRight.setPower(-xCorrect - yCorrect + hCorrect);
 
                 Adhameter.updateOdometry();
 
@@ -216,7 +216,7 @@ public class Drive extends Subsystem {
                 direction = Math.toDegrees(Math.atan(Ydiff/Xdiff));
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
 
-                pointInDirectionRough((direction-90), 8);
+                pointInDirectionRough((direction-90), 10);
 
                 frontLeft.setPower(0.5);
                 backLeft.setPower(0.5);

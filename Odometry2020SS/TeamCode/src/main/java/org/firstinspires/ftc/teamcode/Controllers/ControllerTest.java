@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Controllers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 @Autonomous(name="Controller Test", group="Linear Opmode")
-
+@Disabled
 public class ControllerTest extends LinearOpMode {
 
     // Declare OpMode members.
