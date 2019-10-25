@@ -19,7 +19,7 @@ public class EncoderTest extends LinearOpMode {
 
     private final double omniRadius = 1.85; //Radius of Omni wheels
     private final double gearing = 1.5; //How many times does the Omni spin for each spin of the encoder
-    private final double ticksPerRotation = 1450;
+    private final double ticksPerRotation = 1440;
 
     public void doAction(Subsystem s, String action){
         while(s.isRunning){

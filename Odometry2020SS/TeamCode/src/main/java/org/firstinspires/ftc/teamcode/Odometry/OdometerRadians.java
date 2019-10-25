@@ -60,7 +60,7 @@ public class OdometerRadians extends Subsystem{
     private final double robotRad = 16.396; // Radius of the robot (Left to Right / 2)
     private final double backRad = 19.78; // Distance from the center to the back Omni
     private final double encdrRad = 1.85; // Radius of the Omni wheel
-    private final double ticksPerRotation = 1450; //How many ticks are in 1 revolution of the encoder
+    private final double ticksPerRotation = 1440; //How many ticks are in 1 revolution of the encoder
     private double gear = 1.5; //How many times does the Omni spin for each spin of the encoder
     private double encScale;
 
