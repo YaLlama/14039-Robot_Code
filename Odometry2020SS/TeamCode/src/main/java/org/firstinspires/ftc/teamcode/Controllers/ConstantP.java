@@ -11,11 +11,12 @@ public class ConstantP extends Controller {
 
     private double pGain;
     private double pRange;
-    private double constnt;
+    private double constant;
+    private double error = 1000;
 
     public ConstantP(double constant, double p_Range, double p_Gain) {
 
-        this.constnt = constant;
+        this.constant = constant;
         this.pGain = p_Gain;
         this.pRange = p_Range;
 
@@ -23,14 +24,20 @@ public class ConstantP extends Controller {
 
     public double getCorrection(double target, double current) {
 
-        double error = target - current;
+        error = target - current;
         double correction;
         if(Math.abs(error) > pRange) {
-            correction = constnt * (error / Math.abs(error)); //getting the right sign for correction
+            correction = constant * (error / Math.abs(error)); //getting the right sign for correction
         }else {
             correction = error * pGain;
         }
         return correction;
 
     }
+
+    @Override
+    public double getError() {
+        return error;
+    }
+
 }

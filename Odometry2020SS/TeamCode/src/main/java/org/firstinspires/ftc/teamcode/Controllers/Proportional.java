@@ -9,6 +9,7 @@ public class Proportional extends Controller {
 
     private double pGain;
     private double lim;
+    private double error = 1000;
 
     public Proportional(double p_Gain, double limit) {
         
@@ -19,7 +20,7 @@ public class Proportional extends Controller {
 
     public double getCorrection(double target, double current) {
 
-        double error = target - current;
+        error = target - current;
         double correction = error * pGain;
         
         if(correction > lim) {
@@ -30,5 +31,10 @@ public class Proportional extends Controller {
         }
         
         return correction;
+    }
+
+    @Override
+    public double getError() {
+        return error;
     }
 }

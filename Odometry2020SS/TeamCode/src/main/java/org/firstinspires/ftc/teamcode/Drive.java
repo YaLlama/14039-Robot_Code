@@ -161,7 +161,7 @@ public class Drive extends Subsystem {
         }
     }
             
-    public void strafeToPointOrient(double x, double y, double heading, double threshold) {
+    public void strafeToPointOrient(double x, double y, double heading, double posThreshold, double headThreshold) {
 
         PID holdX = new PID(0.04, 0.002, 0.01, 7, 0.3);
         PID holdY = new PID(0.04, 0.002, 0.01, 7, 0.3);
@@ -171,7 +171,7 @@ public class Drive extends Subsystem {
         double Ydiff = y - Adhameter.getPosition()[1];
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
         
-        while(distance > threshold) {
+        while(distance > posThreshold || Math.abs(orient.getError()) > headThreshold) {
             if (opmode.opModeIsActive()) {
                 
                 Xdiff = x - Adhameter.getPosition()[0];
@@ -201,7 +201,7 @@ public class Drive extends Subsystem {
         }
     }
 
-    public void goToPointSlow(double x, double y, double threshold) {
+    public void goToPointStraight(double x, double y, double threshold) {
 
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
@@ -232,7 +232,7 @@ public class Drive extends Subsystem {
         }
     }
 
-    public void goToPointFast(double x, double y, double power, double threshold) {
+    public void goToPointCurve(double x, double y, double power, double threshold) {
 
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];

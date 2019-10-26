@@ -4,6 +4,7 @@ public class PID extends Controller {
 
     private double pGain, iGain, dGain;
     private double errorSum = 0;
+    private double error = 1000;
     private double lastError = 0;
     private double sumLimit, correctLimit;
 
@@ -18,7 +19,6 @@ public class PID extends Controller {
 
     public double getCorrection(double target, double current) {
 
-        double error;
         double P, I, D;
         double errorSlope;
         double correction;
@@ -53,4 +53,10 @@ public class PID extends Controller {
         return correction;
 
     }
+
+    @Override
+    public double getError() {
+        return error;
+    }
+
 }
