@@ -54,7 +54,12 @@ public class DriveTest extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
+        while(opModeIsActive()) {
+            telemetry.addData("heading: ", Adham.getHeadingDeg());
+            telemetry.update();
+            Adham.updateOdometry();
 
+        }
         //Make sure nothing is still using the thread
     }
 
