@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
 @Autonomous(name="IMU Test", group="Linear Opmode")
-
+@Disabled
 public class IMUtest extends LinearOpMode {
 
     // Declare OpMode members.

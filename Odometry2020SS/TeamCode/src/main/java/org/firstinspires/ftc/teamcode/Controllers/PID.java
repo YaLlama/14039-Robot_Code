@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Controllers;
 
+/*
+This is a self-explanatory PID controller.
+*/
+
 public class PID extends Controller {
 
     private double pGain, iGain, dGain;

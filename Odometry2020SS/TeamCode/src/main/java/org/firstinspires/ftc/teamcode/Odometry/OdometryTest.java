@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
 @Autonomous(name="Odometer Test", group="Linear Opmode")
-
+@Disabled
 public class OdometryTest extends LinearOpMode {
 
     // Declare OpMode members.

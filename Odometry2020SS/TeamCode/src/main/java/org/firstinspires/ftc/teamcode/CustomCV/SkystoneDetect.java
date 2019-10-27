@@ -19,6 +19,10 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+This is a custom detector for the Skystones by team 14039
+*/
+
 public class SkystoneDetect extends DogeCVDetector {
 
     public DogeCV.AreaScoringMethod areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Setting to decide to use MaxAreaScorer or PerfectAreaScorer
@@ -155,4 +159,5 @@ public class SkystoneDetect extends DogeCVDetector {
     public boolean verified() {
         return true;
     }
+
 }

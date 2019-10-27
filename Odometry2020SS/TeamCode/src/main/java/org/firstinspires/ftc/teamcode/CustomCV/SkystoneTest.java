@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.CustomCV;
 
 import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -12,13 +13,14 @@ import java.util.Locale;
 
 /*
  * Thanks to EasyOpenCV for the great API (and most of the example)
- *
  * Original Work Copright(c) 2019 OpenFTC Team
  * Derived Work Copyright(c) 2019 DogeDevs
  */
-@TeleOp(group="DogeCV")
 
-public class skystonetest extends LinearOpMode {
+@TeleOp(name="Custom Detector Test", group = "Linear Opmode")
+
+public class SkystoneTest extends LinearOpMode {
+
     private OpenCvCamera phoneCam;
     private SkystoneDetect skyStoneDetector;
 

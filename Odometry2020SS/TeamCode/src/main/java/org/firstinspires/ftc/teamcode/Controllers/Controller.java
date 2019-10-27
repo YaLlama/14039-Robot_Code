@@ -6,6 +6,6 @@ public abstract class Controller {
 
     abstract  double getError();
 
-    abstract double getCorrection(double target, double currentError);
+    abstract double getCorrection(double target, double current);
 
 }

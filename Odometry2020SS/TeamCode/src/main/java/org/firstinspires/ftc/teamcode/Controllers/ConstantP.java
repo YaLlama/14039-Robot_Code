@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Controllers;
 import java.lang.Math;
 
 /*
-This is a control loop that is best suited for turning a Mechanum-drive robot.
+This is a control loop that is best suited for turning a Mecanum-drive robot.
 It corrects by a constant value until the reading gets close enough to the target, when
 it switches over to a P controller.
 */

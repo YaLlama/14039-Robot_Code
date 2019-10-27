@@ -7,6 +7,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
+/*
+This is an OpMode to test out controllers.
+ */
+
 @Autonomous(name="Controller Test", group="Linear Opmode")
 @Disabled
 public class ControllerTest extends LinearOpMode {

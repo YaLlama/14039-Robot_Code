@@ -53,6 +53,7 @@ public class TeleOpDrive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+            // Driving =============================================================================
             if(gamepad1.left_bumper) {
                 powerScale = 0.6;
             }else if(gamepad1.right_bumper) {
@@ -75,8 +76,6 @@ public class TeleOpDrive extends LinearOpMode {
             leftBack.setPower(lb);
             rightFront.setPower(rf);
             rightBack.setPower(rb);
-
-            telemetry.update();
 
         }
     }
