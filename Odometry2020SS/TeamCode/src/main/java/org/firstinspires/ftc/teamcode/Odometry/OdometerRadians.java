@@ -57,7 +57,7 @@ public class OdometerRadians extends Subsystem{
     public boolean isRunning = true;
 
     //Important constants
-    private final double robotRad = 16.5; // Radius of the robot (Left to Right / 2)
+    private final double robotRad = 18.48; // Radius of the robot (Left to Right / 2)
     private final double backRad = 19.78; // Distance from the center to the back Omni
     private final double encdrRad = 1.85; // Radius of the Omni wheel
     private final double ticksPerRotation = 1440; //How many ticks are in 1 revolution of the encoder
