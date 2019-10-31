@@ -74,8 +74,12 @@ public class OdometryTest extends LinearOpMode {
         double turnCalibration;
         double turnAverage = 0;
         
+        double backCalibration;
+        double backAverage = 0;
+        
         // Turn 1
         double initialHeading = Adham.getHeadingDeg();
+        double initialBack = Adham.getBackReading();
         
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
@@ -83,17 +87,22 @@ public class OdometryTest extends LinearOpMode {
         delay(2000);
         
         double endHeading = Adham.getHeadingDeg();
+        double endBack = Adham.getBackReading();
         
         telemetry.addData("Instruction: ", "Turn complete, prepare for next turn");
         telemetry.update();
         
         turnCalibration = endHeading - initialHeading;
         turnAverage = turnCalibration + turnAverage;
+        
+        backCalibration = endBack - initialBack;
+        backAverage = backCalibration + backAverage;
         
         delay(800);
         
         // Turn 2
         initialHeading = Adham.getHeadingDeg();
+        initialBack = Adham.getBackReading();
         
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
@@ -101,6 +110,7 @@ public class OdometryTest extends LinearOpMode {
         delay(2000);
         
         endHeading = Adham.getHeadingDeg();
+        endBack = Adham.getBackReading();
         
         telemetry.addData("Instruction: ", "Turn complete, prepare for next turn");
         telemetry.update();
@@ -108,8 +118,14 @@ public class OdometryTest extends LinearOpMode {
         turnCalibration = endHeading - initialHeading;
         turnAverage = turnCalibration + turnAverage;
         
+        backCalibration = endBack - initialBack;
+        backAverage = backCalibration + backAverage;
+        
+        delay(800);
+        
         // Turn 3
         initialHeading = Adham.getHeadingDeg();
+        initialBack = Adham.getBackReading();
         
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
@@ -117,6 +133,7 @@ public class OdometryTest extends LinearOpMode {
         delay(2000);
         
         endHeading = Adham.getHeadingDeg();
+        endBack = Adham.getBackReading();
         
         telemetry.addData("Instruction: ", "Turn complete, almost done");
         telemetry.update();
@@ -124,13 +141,21 @@ public class OdometryTest extends LinearOpMode {
         turnCalibration = endHeading - initialHeading;
         turnAverage = turnCalibration + turnAverage;
         
+        backCalibration = endBack - initialBack;
+        backAverage = backCalibration + backAverage;
+        
+        delay(800);
+        
         turnAverage = turnAverage/3;
+        backAverage = backAverage/3;
         
         telemetry.addData("Update: ", "Test complete");
         telemetry.addData("Your percieved turn value is ", turnAverage);
+        telemetry.addData("Your average back reading is ", backAverage);
         telemetry.update();
         
-        //Now with your turnAverage, multiply it by your current robotRad and divide by 360;
+        // NewRobotRad = turnAverage x OldRobotRad / 360
+        // NewBackRad = backAverage / 2 / pi
         
         //Make sure nothing is still using the thread
     }
