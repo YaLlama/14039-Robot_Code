@@ -130,7 +130,7 @@ public class OdometryTest extends LinearOpMode {
         telemetry.addData("Your percieved turn value is ", turnAverage);
         telemetry.update();
         
-        //Now with your turnAverage,
+        //Now with your turnAverage, multiply it by your current robotRad and divide by 360;
         
         //Make sure nothing is still using the thread
     }
