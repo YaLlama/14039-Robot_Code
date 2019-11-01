@@ -84,7 +84,7 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
         
-        delay(2000);
+        delay(3000);
         
         double endHeading = Adham.getHeadingDeg();
         double endBack = Adham.getBackReading();
@@ -107,7 +107,7 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
         
-        delay(2000);
+        delay(3000);
         
         endHeading = Adham.getHeadingDeg();
         endBack = Adham.getBackReading();
@@ -130,7 +130,7 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
         
-        delay(2000);
+        delay(3000);
         
         endHeading = Adham.getHeadingDeg();
         endBack = Adham.getBackReading();
