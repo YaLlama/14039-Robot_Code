@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Drive;
 
 @Autonomous(name="Odometer Calibration", group="Linear Opmode")
 @Disabled
-public class OdometryTest extends LinearOpMode {
+public class OdometerCalibrate extends LinearOpMode {
     
     // Declare OpMode members.
     private DcMotor RightFront;

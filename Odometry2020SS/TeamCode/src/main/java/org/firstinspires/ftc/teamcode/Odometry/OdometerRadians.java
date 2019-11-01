@@ -57,8 +57,8 @@ public class OdometerRadians extends Subsystem{
     public boolean isRunning = true;
 
     //Important constants
-    private final double robotRad = 18.48; // Radius of the robot (Left to Right / 2)
-    private final double backRad = 19.78; // Distance from the center to the back Omni
+    private double robotRad = 18.48; // Radius of the robot (Left to Right / 2)
+    private double backRad = 19.78; // Distance from the center to the back Omni
     private final double encdrRad = 1.85; // Radius of the Omni wheel
     private final double ticksPerRotation = 1440; //How many ticks are in 1 revolution of the encoder
     private double gear = 1.5; //How many times does the Omni spin for each spin of the encoder
@@ -220,6 +220,14 @@ public class OdometerRadians extends Subsystem{
 
         return position;
 
+    }
+
+    public void setRobotRad(double turnAverage) {
+        robotRad = turnAverage * robotRad / 360;
+    }
+
+    public void setBackDistance(double backAverage) {
+        backRad = backAverage / 2 / Math.PI;
     }
 }
 
