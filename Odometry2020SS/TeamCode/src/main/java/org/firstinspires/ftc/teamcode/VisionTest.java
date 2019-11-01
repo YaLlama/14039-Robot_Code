@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 @TeleOp
-public class VIsionTest extends LinearOpMode
+public class VisionTest extends LinearOpMode
 {
     OpenCvCamera phoneCam;
 
