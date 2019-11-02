@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@TeleOp
+@TeleOp(name="DotsVision", group = "Linear Opmode")
 public class VisionTest extends LinearOpMode {
 
     OpenCvCamera phoneCam;
