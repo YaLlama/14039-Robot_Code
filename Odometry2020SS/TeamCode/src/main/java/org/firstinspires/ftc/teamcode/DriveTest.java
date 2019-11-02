@@ -55,7 +55,9 @@ public class DriveTest extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
         while(opModeIsActive()) {
-            telemetry.addData("heading: ", Adham.getHeadingDeg());
+            telemetry.addData("heading", Adham.getHeadingAbsoluteDeg());
+            telemetry.addData("X", Adham.getPosition()[0]);
+            telemetry.addData("Y", Adham.getPosition()[1]);
             telemetry.update();
             Adham.updateOdometry();
 
@@ -64,10 +66,12 @@ public class DriveTest extends LinearOpMode {
     }
 
     private void delay(int millis) {
-        if (opModeIsActive()) {
-            for(int x=0;x<millis; x++) {
+        for(int x=0;x<millis; x++) {
+            if (opModeIsActive()) {
                 Adham.updateOdometry();
                 try{Thread.sleep(1);}catch(InterruptedException e){e.printStackTrace();}
+            }else {
+                break;
             }
         }
     }

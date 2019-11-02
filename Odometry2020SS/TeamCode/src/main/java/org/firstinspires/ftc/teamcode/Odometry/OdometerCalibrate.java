@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.Subsystem;
 import org.firstinspires.ftc.teamcode.Drive;
 
 @Autonomous(name="Odometer Calibration", group="Linear Opmode")
-@Disabled
 public class OdometerCalibrate extends LinearOpMode {
     
     // Declare OpMode members.
@@ -59,17 +58,17 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "This is a calibration program for your Odometer");
         telemetry.update();
         
-        delay(800);
+        delay(500);
         
         telemetry.addData("Instruction: ", "Find a flat field area next to a wall");
         telemetry.update();
         
-        delay(800);
+        delay(500);
         
         telemetry.addData("Instruction: ", "Use the wall to ensure that your robot turns excactly 360 deg");
         telemetry.update();
         
-        delay(800);
+        delay(500);
         
         double turnCalibration;
         double turnAverage = 0;
@@ -84,7 +83,7 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
         
-        delay(3000);
+        delay(2000);
         
         double endHeading = Adham.getHeadingDeg();
         double endBack = Adham.getBackReading();
@@ -107,7 +106,7 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
         
-        delay(3000);
+        delay(2000);
         
         endHeading = Adham.getHeadingDeg();
         endBack = Adham.getBackReading();
@@ -130,7 +129,7 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "Turn your robot 360 degrees counter-clockwise");
         telemetry.update();
         
-        delay(3000);
+        delay(2000);
         
         endHeading = Adham.getHeadingDeg();
         endBack = Adham.getBackReading();
@@ -153,6 +152,8 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Your percieved turn value is ", turnAverage);
         telemetry.addData("Your average back reading is ", backAverage);
         telemetry.update();
+
+        delay(10000);
         
         // NewRobotRad = turnAverage x OldRobotRad / 360
         // NewBackRad = backAverage / 2 / pi
@@ -161,10 +162,12 @@ public class OdometerCalibrate extends LinearOpMode {
     }
 
     private void delay(int millis) {
-        if (opModeIsActive()) {
-            for(int x=0;x<millis; x++) {
+        for(int x=0;x<millis; x++) {
+            if (opModeIsActive()) {
                 Adham.updateOdometry();
                 try{Thread.sleep(1);}catch(InterruptedException e){e.printStackTrace();}
+            }else {
+                break;
             }
         }
     }

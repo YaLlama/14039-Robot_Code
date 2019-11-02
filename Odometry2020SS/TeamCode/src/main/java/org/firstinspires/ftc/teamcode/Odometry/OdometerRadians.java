@@ -57,8 +57,8 @@ public class OdometerRadians extends Subsystem{
     public boolean isRunning = true;
 
     //Important constants
-    private double robotRad = 18.48; // Radius of the robot (Left to Right / 2)
-    private double backRad = 19.78; // Distance from the center to the back Omni
+    private double robotRad = 18.507; // Radius of the robot (Left to Right / 2)
+    private double backRad = 18.633; // Distance from the center to the back Omni
     private final double encdrRad = 1.85; // Radius of the Omni wheel
     private final double ticksPerRotation = 1440; //How many ticks are in 1 revolution of the encoder
     private double gear = 1.5; //How many times does the Omni spin for each spin of the encoder
@@ -206,11 +206,11 @@ public class OdometerRadians extends Subsystem{
     }
 
     public double getHeadingDeg() {
-        return Math.toDegrees(heading) % 360;
+        return Math.toDegrees(heading);
     }
 
     public double getHeadingAbsoluteDeg() {
-        return Math.toDegrees(heading);
+        return Math.toDegrees(heading) % 360;
     }
 
     public double[] getPosition() {
