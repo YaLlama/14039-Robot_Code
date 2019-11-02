@@ -8,8 +8,10 @@ import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
+
 @TeleOp
 public class VisionTest extends LinearOpMode {
+
     OpenCvCamera phoneCam;
     private DcMotor RightFront;
     private DcMotor RightBack;
