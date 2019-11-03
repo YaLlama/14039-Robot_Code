@@ -244,5 +244,10 @@ public class Odometer2 extends Subsystem{
     public void setBackDistance(double backAverage) {
         backRad = backAverage / 2 / Math.PI;
     }
+
+    public double getRobotRad() {
+        return robotRad;
+    }
+
 }
 

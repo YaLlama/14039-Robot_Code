@@ -1,15 +1,16 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
+import org.firstinspires.ftc.teamcode.Hardware.Drive;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
+import org.firstinspires.ftc.teamcode.Subsystem;
 
-@Autonomous(name="Drive Test", group="Linear Opmode")
+@Autonomous(name="Odometer Test", group="Linear Opmode")
 
-public class DriveTest extends LinearOpMode {
+public class OdometerTest extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor RightFront;

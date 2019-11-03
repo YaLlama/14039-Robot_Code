@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Drive;
+import org.firstinspires.ftc.teamcode.Hardware.Drive;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 @Autonomous(name="Block Side Auto", group="Linear Opmode")
@@ -48,16 +48,14 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
-        Driver.strafeToPointOrient(-22,14,0,2,2);
-        Driver.strafeToPointOrient(-10,10,0,2,2);
-        Driver.strafeToPointOrient(4,-6,0,2,2);
-        Driver.strafeToPointOrient(-9,15,0,2,2);
-        Driver.strafeToPointOrient(-11,2,0,2,2);
-        Driver.strafeToPointOrient(0,0,0,2,2);
 
+        Driver.strafeToPointOrient(0, 20, 0, 2, 2);
+        Driver.strafeToPointOrient(30, 0, 0, 2, 2);
+        Driver.strafeToPointOrient(0, -30, 0, 2, 2);
+        Driver.strafeToPointOrient(-30, 0, 0, 2, 2);
+        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
 
-
-        //Make sure nothing is still using the thread
+        //Make sure nothing is still using the thread - End Autonomous period
     }
 
     private void delay(int millis) {

@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.Odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Subsystem;
-import org.firstinspires.ftc.teamcode.Drive;
+import org.firstinspires.ftc.teamcode.Hardware.Drive;
 
 @Autonomous(name="Odometer Calibration", group="Linear Opmode")
 public class OdometerCalibrate extends LinearOpMode {
@@ -58,17 +57,17 @@ public class OdometerCalibrate extends LinearOpMode {
         telemetry.addData("Instruction: ", "This is a calibration program for your Odometer");
         telemetry.update();
         
-        delay(500);
+        delay(200);
         
         telemetry.addData("Instruction: ", "Find a flat field area next to a wall");
         telemetry.update();
         
-        delay(500);
+        delay(200);
         
         telemetry.addData("Instruction: ", "Use the wall to ensure that your robot turns excactly 360 deg");
         telemetry.update();
         
-        delay(500);
+        delay(200);
         
         double turnCalibration;
         double turnAverage = 0;
@@ -97,7 +96,7 @@ public class OdometerCalibrate extends LinearOpMode {
         backCalibration = endBack - initialBack;
         backAverage = backCalibration + backAverage;
         
-        delay(800);
+        delay(400);
         
         // Turn 2
         initialHeading = Adham.getHeadingDeg();
@@ -120,7 +119,7 @@ public class OdometerCalibrate extends LinearOpMode {
         backCalibration = endBack - initialBack;
         backAverage = backCalibration + backAverage;
         
-        delay(800);
+        delay(400);
         
         // Turn 3
         initialHeading = Adham.getHeadingDeg();
@@ -143,21 +142,20 @@ public class OdometerCalibrate extends LinearOpMode {
         backCalibration = endBack - initialBack;
         backAverage = backCalibration + backAverage;
         
-        delay(800);
+        delay(400);
         
         turnAverage = turnAverage/3;
         backAverage = backAverage/3;
+
+        double robotRad = turnAverage * Adham.getRobotRad() / 360;
+        double backRad = backAverage / 2 / Math.PI;
         
         telemetry.addData("Update: ", "Test complete");
-        telemetry.addData("Your percieved turn value is ", turnAverage);
-        telemetry.addData("Your average back reading is ", backAverage);
+        telemetry.addData("Your robot radius is ", turnAverage);
+        telemetry.addData("Your back radius is ", backAverage);
         telemetry.update();
 
         delay(10000);
-        
-        // NewRobotRad = turnAverage x OldRobotRad / 360
-        // NewBackRad = backAverage / 2 / pi
-        
         //Make sure nothing is still using the thread
     }
 

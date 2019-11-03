@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
 import org.firstinspires.ftc.teamcode.Controllers.PID;
+import org.firstinspires.ftc.teamcode.Subsystem;
 
 public class Drive extends Subsystem {
 
@@ -74,6 +75,8 @@ public class Drive extends Subsystem {
             backLeft.setPower(0);
         }
     }
+
+    //Autonomous Methods ===========================================================================
 
     public void pointInDirection(double direction) { // Verified
         ConstantP turn = new ConstantP(0.5, 20, 0.025);
@@ -274,6 +277,8 @@ public class Drive extends Subsystem {
 
     public void doAction(String action) {
     }
+
+    //Continuous Methods ===========================================================================
 
     private double cos(double theta) {
         return Math.cos(Math.toRadians(theta));
