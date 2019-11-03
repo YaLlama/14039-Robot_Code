@@ -151,8 +151,8 @@ public class OdometerCalibrate extends LinearOpMode {
         double backRad = backAverage / 2 / Math.PI;
         
         telemetry.addData("Update: ", "Test complete");
-        telemetry.addData("Your robot radius is ", turnAverage);
-        telemetry.addData("Your back radius is ", backAverage);
+        telemetry.addData("Your robot radius is ", robotRad);
+        telemetry.addData("Your back radius is ", backRad);
         telemetry.update();
 
         delay(10000);
