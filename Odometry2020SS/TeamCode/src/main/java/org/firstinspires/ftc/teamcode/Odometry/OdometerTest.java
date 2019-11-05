@@ -66,8 +66,14 @@ public class OdometerTest extends LinearOpMode {
         double distance = Math.sqrt(changeX * changex + changeY * changeY);
         
         telemetry.addData("Drift", distance)
-            
+        telemetry.update();
+        
         while(opModeIsActive()) {
+            telemetry.addData("heading", Adham.getHeadingAbsoluteDeg());
+            telemetry.addData("X", Adham.getPosition()[0]);
+            telemetry.addData("Y", Adham.getPosition()[1]);
+            telemetry.update();
+            Adham.updateOdometry();
             
         }
         //Make sure nothing is still using the thread
