@@ -120,7 +120,7 @@ public class Odometer2 extends Subsystem{
 
     }
 
-    public void calculate(){
+    public void updateOdometry(){
 
         if(opmode.opModeIsActive()){
 
@@ -199,7 +199,7 @@ public class Odometer2 extends Subsystem{
     }
 
     public void update() {
-        calculate();
+        updateOdometry();
         integrate();
 
     }

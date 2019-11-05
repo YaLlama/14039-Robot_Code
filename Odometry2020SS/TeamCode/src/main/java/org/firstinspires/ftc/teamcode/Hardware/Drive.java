@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Controllers.Proportional;
+import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
@@ -19,13 +20,13 @@ public class Drive extends Subsystem {
     private DcMotor backLeft;
     private DcMotor backRight;
 
-    private OdometerRadians Adhameter;
+    private Odometer2 Adhameter;
 
     private LinearOpMode opmode;
 
     public boolean isRunning;
 
-    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, OdometerRadians Odometree, LinearOpMode oppy) {
+    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, Odometer2 Odometree, LinearOpMode oppy) {
 
         this.frontLeft = Lf;
         this.frontRight = Rf;

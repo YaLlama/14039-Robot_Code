@@ -18,7 +18,7 @@ public class OdometerTest extends LinearOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
 
-    private OdometerRadians Adham;
+    private Odometer2 Adham;
     private Drive Driver;
 
     public void doAction(Subsystem s, String action){
@@ -37,7 +37,7 @@ public class OdometerTest extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("backEncoder");
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
-        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
         Adham.initializeOdometry();
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
