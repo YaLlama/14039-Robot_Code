@@ -55,22 +55,7 @@ public class OdometerTest extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
-<<<<<<< HEAD
-        double initialX = Adham.getPosition()[0];
-        double initialY = Adham.getPosition()[1];
-        
-        delay(2000);
-        
-        double changeX = Adham.getPosition()[0] - initialX;
-        double changeY = Adham.getPosition()[1] - initialY;
-        
-        double distance = Math.sqrt(changeX * changeX + changeY * changeY);
-        
-        telemetry.addData("Drift", distance);
-        telemetry.update();
-=======
->>>>>>> 51f28201f4bd372e320e9fe2b721322940b9148d
-        
+
         while(opModeIsActive()) {
             telemetry.addData("heading", Adham.getHeadingAbsoluteDeg());
             telemetry.addData("X", Adham.getPosition()[0]);
