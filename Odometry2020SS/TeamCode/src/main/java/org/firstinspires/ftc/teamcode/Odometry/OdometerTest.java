@@ -55,18 +55,6 @@ public class OdometerTest extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
-        double initialX = Adham.getPosition()[0];
-        double initialY = Adham.getPosition()[1];
-        
-        delay(2000);
-        
-        double changeX = Adham.getPosition()[0] - initialX;
-        double changeY = Adham.getPosition()[1] - initialY;
-        
-        double distance = Math.sqrt(changeX * changex + changeY * changeY);
-        
-        telemetry.addData("Drift", distance)
-        telemetry.update();
         
         while(opModeIsActive()) {
             telemetry.addData("heading", Adham.getHeadingAbsoluteDeg());
@@ -76,6 +64,21 @@ public class OdometerTest extends LinearOpMode {
             Adham.updateOdometry();
             
         }
+
+        /*
+        double initialX = Adham.getPosition()[0];
+        double initialY = Adham.getPosition()[1];
+
+        delay(2000);
+
+        double changeX = Adham.getPosition()[0] - initialX;
+        double changeY = Adham.getPosition()[1] - initialY;
+
+        double distance = Math.sqrt(changeX * changeX + changeY * changeY);
+
+        telemetry.addData("Drift", distance);
+        telemetry.update();
+         */
         //Make sure nothing is still using the thread
     }
 
