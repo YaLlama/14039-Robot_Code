@@ -49,7 +49,7 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        Driver.strafeToPointOrient(0, 20, 0, 2, 2);
+        Driver.strafeToPointOrient(0, 30, 0, 2, 2);
         Driver.strafeToPointOrient(30, 0, 0, 2, 2);
         Driver.strafeToPointOrient(0, -30, 0, 2, 2);
         Driver.strafeToPointOrient(-30, 0, 0, 2, 2);

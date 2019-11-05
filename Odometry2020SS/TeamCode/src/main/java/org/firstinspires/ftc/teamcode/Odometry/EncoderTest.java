@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
 @Autonomous(name="Encoder Test", group="Linear Opmode")
-@Disabled
+
 public class EncoderTest extends LinearOpMode {
 
     // Declare OpMode members.
@@ -16,8 +16,8 @@ public class EncoderTest extends LinearOpMode {
     private DcMotor Encoder1;
     private DcMotor Encoder2;
 
-    private final double omniRadius = 1.85; //Radius of Omni wheels
-    private final double gearing = 1.5; //How many times does the Omni spin for each spin of the encoder
+    private final double omniRadius = 1.875; //Radius of Omni wheels
+    private final double gearing = 1.333; //How many times does the Omni spin for each spin of the encoder
     private final double ticksPerRotation = 1440;
 
     public void doAction(Subsystem s, String action){
