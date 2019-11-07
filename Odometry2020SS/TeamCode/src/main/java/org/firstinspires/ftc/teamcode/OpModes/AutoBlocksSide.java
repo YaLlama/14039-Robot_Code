@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
+import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 @Autonomous(name="Block Side Auto", group="Linear Opmode")
@@ -17,7 +18,7 @@ public class AutoBlocksSide extends LinearOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
 
-    private OdometerRadians Adham;
+    private Odometer2 Adham;
     private Drive Driver;
 
     private void initialize(){
@@ -30,7 +31,7 @@ public class AutoBlocksSide extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("backEncoder");
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
-        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
         Adham.initializeOdometry();
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
@@ -49,11 +50,9 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        Driver.strafeToPointOrient(0, 30, 0, 2, 2);
-        Driver.strafeToPointOrient(30, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(0, -30, 0, 2, 2);
-        Driver.strafeToPointOrient(-30, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
+        Driver.pointInDirection(90);
+        Driver.strafeToPointOrient(-30, 30, 0, 0, 0);
+        Driver.strafeToPointOrient(0, 0, 90, 0, 0);
 
         //Make sure nothing is still using the thread - End Autonomous period
     }
