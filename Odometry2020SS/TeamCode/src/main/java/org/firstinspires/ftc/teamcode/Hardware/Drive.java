@@ -24,6 +24,8 @@ public class Drive extends Subsystem {
 
     private LinearOpMode opmode;
 
+    private int count;
+
     public boolean isRunning;
 
     public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, Odometer2 Odometree, LinearOpMode oppy) {
@@ -93,7 +95,7 @@ public class Drive extends Subsystem {
                 frontRight.setPower(correction);
                 backRight.setPower(correction);
 
-                Adhameter.updateOdometry();
+                localize();
 
             }else{
                 break;
@@ -118,48 +120,9 @@ public class Drive extends Subsystem {
                 backRight.setPower(correction);
 
                 error = Adhameter.getHeadingDeg() - direction;
-                Adhameter.updateOdometry();
+                localize();
 
             }else{
-                break;
-            }
-        }
-    }
-
-    public void strafeToPoint(double x, double y, double threshold) {
-
-        PID holdX = new PID(0.03, 0.002, 0.01, 7, 0.4);
-        PID holdY = new PID(0.03, 0.002, 0.01, 7, 0.4);
-        
-        double Xdiff = x - Adhameter.getPosition()[0];
-        double Ydiff = y - Adhameter.getPosition()[1];
-        double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
-        
-        while(distance > threshold) {
-            if (opmode.opModeIsActive()) {
-                
-                Xdiff = x - Adhameter.getPosition()[0];
-                Ydiff = y - Adhameter.getPosition()[1];
-                distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
-                
-                double h = Adhameter.getHeadingDeg();
-
-                // Rotating our movement vector so that it's relative to the robot
-                double XD = cos(-h) * Xdiff - sin(-h) * Ydiff;
-                double YD = sin(-h) * Xdiff + cos(-h) * Ydiff;
-                
-                double xCorrect = holdX.getCorrection(0, XD);
-                double yCorrect = holdY.getCorrection(0, YD);
-                
-                frontLeft.setPower(-xCorrect - yCorrect);
-                backLeft.setPower(xCorrect - yCorrect);
-
-                frontRight.setPower(xCorrect - yCorrect);
-                backRight.setPower(-xCorrect - yCorrect);
-
-                Adhameter.updateOdometry();
-
-            }else {
                 break;
             }
         }
@@ -167,8 +130,10 @@ public class Drive extends Subsystem {
             
     public void strafeToPointOrient(double x, double y, double heading, double posThreshold, double headThreshold) {
 
-        PID holdX = new PID(0.04, 0.002, 0.01, 7, 0.3);
-        PID holdY = new PID(0.04, 0.002, 0.01, 7, 0.3);
+        count = 0;
+
+        PID holdX = new PID(0.05, 0.002, 0.01, 7, 0.3);
+        PID holdY = new PID(0.05, 0.002, 0.01, 7, 0.3);
         Proportional orient = new Proportional(0.02, 0.4);
         
         double Xdiff = x - Adhameter.getPosition()[0];
@@ -197,7 +162,7 @@ public class Drive extends Subsystem {
                 frontRight.setPower(xCorrect - yCorrect + hCorrect);
                 backRight.setPower(-xCorrect - yCorrect + hCorrect);
 
-                Adhameter.updateOdometry();
+                localize();
 
             }else {
                 break;
@@ -228,7 +193,7 @@ public class Drive extends Subsystem {
                 backRight.setPower(0.5);
 
                 delay(500);
-                Adhameter.updateOdometry();
+                localize();
 
             }else {
                 break;
@@ -261,7 +226,7 @@ public class Drive extends Subsystem {
                 frontRight.setPower(power + correct);
                 backRight.setPower(power + correct);
 
-                Adhameter.updateOdometry();
+                localize();
 
             }else {
                 break;
@@ -269,9 +234,17 @@ public class Drive extends Subsystem {
         }
     }
 
+    public void localize() {
+        Adhameter.updateOdometry();
+        if(count%6 == 0) {
+            Adhameter.integrate();
+        }
+        count++;
+    }
+
     private void delay(int millis) {
         for(int x=0;x<millis; x++) {
-            Adhameter.updateOdometry();
+            localize();
             try{Thread.sleep(1);}catch(InterruptedException e){e.printStackTrace();}
         }
     }

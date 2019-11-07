@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
+import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -19,7 +20,7 @@ public class VisionTest extends LinearOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
 
-    private OdometerRadians Adham;
+    private Odometer2 Adham;
     private Drive Driver;
 
     private void initialize(){
@@ -33,7 +34,7 @@ public class VisionTest extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("backEncoder");
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
-        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
         Adham.initializeOdometry();
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
@@ -64,8 +65,6 @@ public class VisionTest extends LinearOpMode {
         phoneCam.setPipeline(pipeline);
 
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-
-        Driver.strafeToPoint(-30,40,0);
 
         while (opModeIsActive())
         {

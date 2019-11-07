@@ -55,13 +55,21 @@ public class OdometerTest extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
+        int count = 0;
 
         while(opModeIsActive()) {
             telemetry.addData("heading", Adham.getHeadingAbsoluteDeg());
             telemetry.addData("X", Adham.getPosition()[0]);
             telemetry.addData("Y", Adham.getPosition()[1]);
             telemetry.update();
+
             Adham.updateOdometry();
+
+            if(count%5 == 0) {
+                Adham.integrate();
+            }
+
+            count++;
             
         }
 

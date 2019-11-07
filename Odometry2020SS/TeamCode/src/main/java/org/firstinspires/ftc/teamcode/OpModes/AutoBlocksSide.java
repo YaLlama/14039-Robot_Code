@@ -50,11 +50,9 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        Driver.strafeToPointOrient(0, 30, 0, 2, 2);
-        Driver.strafeToPointOrient(30, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(0, -30, 0, 2, 2);
-        Driver.strafeToPointOrient(-30, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
+        Driver.pointInDirection(90);
+        Driver.strafeToPointOrient(-30, 30, 0, 0, 0);
+        Driver.strafeToPointOrient(0, 0, 90, 0, 0);
 
         //Make sure nothing is still using the thread - End Autonomous period
     }
