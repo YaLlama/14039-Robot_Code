@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.CustomCV;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
+import org.firstinspires.ftc.teamcode.CustomCV.SamplePipeline;
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
+import org.firstinspires.ftc.teamcode.SkystoneLocation;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
@@ -19,8 +20,11 @@ public class VisionTest extends LinearOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
 
+
+    private String skystring;
     private OdometerRadians Adham;
     private Drive Driver;
+
 
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
@@ -65,7 +69,11 @@ public class VisionTest extends LinearOpMode {
 
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
+
         Driver.strafeToPoint(-30,40,0);
+
+
+
 
         while (opModeIsActive())
         {
