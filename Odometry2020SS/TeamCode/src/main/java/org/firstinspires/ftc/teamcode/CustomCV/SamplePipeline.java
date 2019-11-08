@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-class SamplePipeline extends OpenCvPipeline {
+public class SamplePipeline extends OpenCvPipeline {
 
     private Mat mat0;
     private Mat mat1;
@@ -30,12 +30,12 @@ class SamplePipeline extends OpenCvPipeline {
     private Scalar WHITE = new Scalar(255,255,255);
     private Scalar RED = new Scalar(255, 0, 0);
 
-    private double cx0 = 125;
-    private double cy0 = 50;
-    private double cx1 = 125;
+    private double cx0 = 130;
+    private double cy0 = 45;
+    private double cx1 = 130;
     private double cy1 = 150;
-    private double cx2 = 125;
-    private double cy2 = 250;
+    private double cx2 = 130;
+    private double cy2 = 255;
 
     private int r = 5;
     private int strokeWidth = 3;

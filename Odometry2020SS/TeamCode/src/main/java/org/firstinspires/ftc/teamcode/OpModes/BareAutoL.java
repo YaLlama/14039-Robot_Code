@@ -16,14 +16,6 @@ public class BareAutoL extends LinearOpMode {
 
     // Declare OpMode members.
 
-
-    public void doAction(Subsystem s, String action){
-        while(s.isRunning){
-            s.doAction(action);
-        }
-    }
-
-
     private void initialize(){
         // Initialize all objects declared above
         telemetry.addData("Status", "Initialized");

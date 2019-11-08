@@ -21,12 +21,6 @@ public class OdometerTest extends LinearOpMode {
     private Odometer2 Adham;
     private Drive Driver;
 
-    public void doAction(Subsystem s, String action){
-        while(s.isRunning){
-            s.doAction(action);
-        }
-    }
-
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
         telemetry.update();
@@ -38,7 +32,7 @@ public class OdometerTest extends LinearOpMode {
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initializeOdometry();
+        Adham.initializeOdometry(0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.CustomCV;
 
 import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -18,7 +19,7 @@ import java.util.Locale;
  */
 
 @TeleOp(name="Custom Detector Test", group = "Linear Opmode")
-
+@Disabled
 public class SkystoneTest extends LinearOpMode {
 
     private OpenCvCamera phoneCam;

@@ -12,7 +12,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@TeleOp(name="DotsVision", group = "Linear Opmode")
+@TeleOp(name="Vision Test", group = "Linear Opmode")
 public class VisionTest extends LinearOpMode {
 
     OpenCvCamera phoneCam;
@@ -21,13 +21,10 @@ public class VisionTest extends LinearOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
 
-<<<<<<< HEAD
-
     private String skystring;
-    private OdometerRadians Adham;
-=======
+
     private Odometer2 Adham;
->>>>>>> 272007b42aefb35aa15be6058ac6fef39f6b0fb9
+
     private Drive Driver;
 
 
@@ -43,14 +40,13 @@ public class VisionTest extends LinearOpMode {
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initializeOdometry();
+        Adham.initializeOdometry(0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
-
 
     }
 
@@ -74,15 +70,6 @@ public class VisionTest extends LinearOpMode {
 
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
-<<<<<<< HEAD
-
-        Driver.strafeToPoint(-30,40,0);
-
-
-
-
-=======
->>>>>>> 272007b42aefb35aa15be6058ac6fef39f6b0fb9
         while (opModeIsActive())
         {
             telemetry.addData("FPS", String.format("%.2f", phoneCam.getFps()));
@@ -92,11 +79,5 @@ public class VisionTest extends LinearOpMode {
 
             sleep(100);
         }
-
-
-
-
-
     }
-
 }

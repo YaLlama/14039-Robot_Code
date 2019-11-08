@@ -20,12 +20,6 @@ public class EncoderTest extends LinearOpMode {
     private final double gearing = 1.333; //How many times does the Omni spin for each spin of the encoder
     private final double ticksPerRotation = 1440;
 
-    public void doAction(Subsystem s, String action){
-        while(s.isRunning){
-            s.doAction(action);
-        }
-    }
-
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
         telemetry.update();

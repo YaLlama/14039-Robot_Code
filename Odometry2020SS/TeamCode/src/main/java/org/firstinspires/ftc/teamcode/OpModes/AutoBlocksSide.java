@@ -4,9 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
-import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
+
+import org.firstinspires.ftc.teamcode.SkystoneLocation;
+import org.firstinspires.ftc.teamcode.CustomCV.SamplePipeline;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
 
 @Autonomous(name="Block Side Auto", group="Linear Opmode")
 
@@ -20,6 +26,7 @@ public class AutoBlocksSide extends LinearOpMode {
 
     private Odometer2 Adham;
     private Drive Driver;
+    SamplePipeline pipeline;
 
     private void initialize(){
 
@@ -33,7 +40,7 @@ public class AutoBlocksSide extends LinearOpMode {
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initializeOdometry();
+        Adham.initializeOdometry(34, 150);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
@@ -51,12 +58,7 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        delay(20);
-        Driver.pointInDirection(90);
-        delay(10);
-        Driver.strafeToPointOrient(-30, 30, 0, 0, 0);
-        delay(40);
-        Driver.strafeToPointOrient(0, 0, 90, 0, 0);
+        Driver.strafeToPointOrient(68, 33, 0, 2, 2);
 
         //Make sure nothing is still using the thread - End Autonomous period
     }

@@ -86,7 +86,7 @@ public class Odometer2 extends Subsystem{
 
     }
 
-    public void initializeOdometry(){
+    public void initializeOdometry(double X, double Y){
 
         x = 0;
         y = 0;
