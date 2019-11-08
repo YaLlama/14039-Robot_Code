@@ -22,6 +22,7 @@ public class AutoBlocksSide extends LinearOpMode {
     private Drive Driver;
 
     private void initialize(){
+
         telemetry.addData("Status: ", "Initializing");
         telemetry.update();
 
@@ -50,19 +51,22 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
+        delay(20);
         Driver.pointInDirection(90);
+        delay(10);
         Driver.strafeToPointOrient(-30, 30, 0, 0, 0);
+        delay(40);
         Driver.strafeToPointOrient(0, 0, 90, 0, 0);
 
         //Make sure nothing is still using the thread - End Autonomous period
     }
 
     private void delay(int millis) {
-        int limmit = (int)(millis/4);
-        for(int x=0;x<millis; x++) {
+        int limit = (int)(millis/2);
+        for(int x=0;x<limit; x++) {
             if (opModeIsActive()) {
-                Adham.updateOdometry();
-                try{Thread.sleep(4);}catch(InterruptedException e){e.printStackTrace();}
+                Driver.localize();
+                try{Thread.sleep(2);}catch(InterruptedException e){e.printStackTrace();}
             }else {
                 break;
             }

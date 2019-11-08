@@ -27,6 +27,7 @@ public class Drive extends Subsystem {
     private int count;
 
     public boolean isRunning;
+    public boolean stopped;
 
     public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, Odometer2 Odometree, LinearOpMode oppy) {
 
@@ -128,7 +129,7 @@ public class Drive extends Subsystem {
         }
     }
             
-    public void strafeToPointOrient(double x, double y, double heading, double posThreshold, double headThreshold) {
+    public void strafeToPointOrient(double x, double y, double heading, double posThreshold, double headThreshold) { // Verified
 
         count = 0;
 
@@ -243,13 +244,15 @@ public class Drive extends Subsystem {
     }
 
     private void delay(int millis) {
-        for(int x=0;x<millis; x++) {
-            localize();
-            try{Thread.sleep(1);}catch(InterruptedException e){e.printStackTrace();}
+        int limit = (int)(millis/2);
+        for(int x=0;x<limit; x++) {
+            if (opmode.opModeIsActive()) {
+                localize();
+                try{Thread.sleep(2);}catch(InterruptedException e){e.printStackTrace();}
+            }else {
+                break;
+            }
         }
-    }
-
-    public void doAction(String action) {
     }
 
     //Continuous Methods ===========================================================================

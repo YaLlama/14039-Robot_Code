@@ -71,10 +71,6 @@ public class Odometer2 extends Subsystem{
 
     private LinearOpMode opmode;
 
-    public void doAction(String action){
-        //IDK if this feature will be used, might be a pain
-    }
-
     //3 Encoder objects, The distance from the L and R Omni's to the center, The distance from the back Omni to the center, the radius of the Omni
     public Odometer2(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, double RD, double LD, double BD, LinearOpMode oppy){
 

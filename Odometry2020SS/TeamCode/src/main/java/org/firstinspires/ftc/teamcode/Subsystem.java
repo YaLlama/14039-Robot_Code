@@ -4,6 +4,6 @@ public abstract class Subsystem {
 
     public boolean isRunning;
 
-    public abstract void doAction(String action);
+    public boolean stop;
 
 }
