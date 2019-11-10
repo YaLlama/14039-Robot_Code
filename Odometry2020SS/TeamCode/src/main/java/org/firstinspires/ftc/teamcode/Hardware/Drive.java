@@ -57,6 +57,8 @@ public class Drive extends Subsystem {
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.REVERSE);
 
+        count = 0;
+
         isRunning = true;
 
     }

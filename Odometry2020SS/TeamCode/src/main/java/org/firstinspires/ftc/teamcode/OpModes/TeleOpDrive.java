@@ -4,8 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
+import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
 
 @TeleOp(name="Teleop Chassis Test", group="Linear Opmode")
 
@@ -17,7 +19,11 @@ public class TeleOpDrive extends LinearOpMode {
     private DcMotor rightFront;
     private DcMotor rightBack;
 
+    private DcMotor intakeLeft;
+    private DcMotor intakeRight;
+
     private Drive drivetrain;
+    private Odometer2 Adham;
 
     private void initialize(){
         // Initialize all objects declared above
@@ -27,8 +33,16 @@ public class TeleOpDrive extends LinearOpMode {
         leftBack = hardwareMap.dcMotor.get("backEncoder");
         rightBack = hardwareMap.dcMotor.get("rightBack");
 
+        intakeLeft = hardwareMap.dcMotor.get("leftIntake");
+        intakeRight = hardwareMap.dcMotor.get("rightIntake");
+
         drivetrain = new Drive(leftFront, rightFront, leftBack, rightBack, null, this);
         drivetrain.initialize();
+
+        Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, 1, this);
+        Adham.initializeOdometry(0, 0);
+
+        intakeRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -75,6 +89,29 @@ public class TeleOpDrive extends LinearOpMode {
             rightFront.setPower(rf);
             rightBack.setPower(rb);
 
+            // Intake ==============================================================================
+
+            intakeManual();
+
+            drivetrain.localize();
+            telemetry.addData("X", Adham.getPosition()[0]);
+            telemetry.addData("Y", Adham.getPosition()[1]);
+            telemetry.addData("Y", Adham.getHeadingDeg());
+            telemetry.update();
+
+        }
+    }
+
+    public void intakeManual(){
+        //intake controls
+        if(Math.abs(gamepad2.right_stick_x) > 0 || Math.abs(gamepad2.right_stick_y) > 0){
+            double rx = .3 * gamepad2.right_stick_x;
+            double ry = -gamepad2.right_stick_y;
+            intakeLeft.setPower(ry + rx);
+            intakeRight.setPower(ry - rx);
+        }else{
+            intakeLeft.setPower(0);
+            intakeRight.setPower(0);
         }
     }
 }
