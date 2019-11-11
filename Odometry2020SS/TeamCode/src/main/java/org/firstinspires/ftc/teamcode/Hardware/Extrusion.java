@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystem;
 The direction of the motor must be such that a positive power causes the encoder to increase
  */
 public class Extrusion extends Subsystem {
+    public boolean isRunning;
 
     private DcMotor motor1;
     private DcMotor motor2;
@@ -59,6 +60,7 @@ public class Extrusion extends Subsystem {
     //Autonomous Methods ===========================================================================
 
     public void runToPosition(double target) {
+        isRunning = true;
         double correct;
         while(op.opModeIsActive()) {
             correct = run.getCorrection(target, motor1.getCurrentPosition());
@@ -68,30 +70,56 @@ public class Extrusion extends Subsystem {
                 break;
             }
         }
+        isRunning = false;
     }
 
     private void reachUpperLimit() {
+        isRunning = true;
         while(op.opModeIsActive()) {
             if (limitSwitch.getState()) {
 
             }
         }
+        isRunning = false;
     }
 
     public void extend(String method) {
+        isRunning = true;
         if(method.equals("encoder")) {
             runToPosition(upperLimit - 10);
         }else if(method.equals("switch")) {
 
         }
+        isRunning = false;
     }
 
     public void retract(String method) {
+        isRunning = true;
+        // crap here
+        isRunning = false;
 
     }
 
+    // Continuous Methods ==========================================================================
 
-    public void doAction(String action) {
+    public void runToPositionTeleOp(double target) {
+        double correct = run.getCorrection(target, motor1.getCurrentPosition());
+        if (Math.abs(correct) > powerLowLimit) {
+            isRunning = true;
+            motor1.setPower(-correct);
+        }else {
+            motor1.setPower(0);
+            isRunning = false;
+        }
+    }
 
+    public void retractTeleOp() {
+        if (!limitSwitch.getState()) {
+            motor1.setPower(0);
+            isRunning = false;
+        }else {
+            motor1.setPower(0.4);
+            isRunning = true;
+        }
     }
 }

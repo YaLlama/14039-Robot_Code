@@ -5,8 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
+import org.firstinspires.ftc.teamcode.Hardware.Intake;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
 
 @TeleOp(name="Teleop Chassis Test", group="Linear Opmode")
@@ -22,8 +24,9 @@ public class TeleOpDrive extends LinearOpMode {
     private DcMotor intakeLeft;
     private DcMotor intakeRight;
 
-    private Drive drivetrain;
+    private Drive Drivetrain;
     private Odometer2 Adham;
+    private Intake Intake;
 
     private void initialize(){
         // Initialize all objects declared above
@@ -36,13 +39,14 @@ public class TeleOpDrive extends LinearOpMode {
         intakeLeft = hardwareMap.dcMotor.get("leftIntake");
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
 
-        drivetrain = new Drive(leftFront, rightFront, leftBack, rightBack, null, this);
-        drivetrain.initialize();
+        Drivetrain = new Drive(leftFront, rightFront, leftBack, rightBack, Adham, this);
+        Drivetrain.initialize();
 
         Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, 1, this);
         Adham.initializeOdometry(0, 0);
 
-        intakeRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        Intake = new Intake(intakeLeft, intakeRight);
+        Intake.initialize(-1, 1);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -58,42 +62,19 @@ public class TeleOpDrive extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
 
-        double powerScale;
-        double x1, x2, y1, y2;
-        double lf, lb, rf, rb;
+        Gamepad driver = gamepad1;
+        Gamepad scorer = gamepad2;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Driving =============================================================================
-            if(gamepad1.left_bumper) {
-                powerScale = 0.6;
-            }else if(gamepad1.right_bumper) {
-                powerScale = 0.2;
-            }else {
-                powerScale = 1;
-            }
-
-            y1 = -gamepad1.right_stick_y;
-            x1 = -gamepad1.right_stick_x;
-            x2 = -gamepad1.left_stick_x;
-            y2 = -gamepad1.left_stick_y;
-
-            rf = (y1 + x1) * powerScale;
-            rb = (y1 - x1) * powerScale;
-            lf = (y2 - x2) * powerScale;
-            lb = (y2 + x2) * powerScale;
-
-            leftFront.setPower(lf);
-            leftBack.setPower(lb);
-            rightFront.setPower(rf);
-            rightBack.setPower(rb);
+            Drivetrain.handleDrive(driver, false);
 
             // Intake ==============================================================================
+            Intake.intakeManual(scorer);
 
-            intakeManual();
-
-            drivetrain.localize();
+            Drivetrain.localize();
             telemetry.addData("X", Adham.getPosition()[0]);
             telemetry.addData("Y", Adham.getPosition()[1]);
             telemetry.addData("Y", Adham.getHeadingDeg());
@@ -102,16 +83,5 @@ public class TeleOpDrive extends LinearOpMode {
         }
     }
 
-    public void intakeManual(){
-        //intake controls
-        if(Math.abs(gamepad2.right_stick_x) > 0 || Math.abs(gamepad2.right_stick_y) > 0){
-            double rx = .3 * gamepad2.right_stick_x;
-            double ry = -gamepad2.right_stick_y;
-            intakeLeft.setPower(ry + rx);
-            intakeRight.setPower(ry - rx);
-        }else{
-            intakeLeft.setPower(0);
-            intakeRight.setPower(0);
-        }
-    }
+
 }

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Controllers.Proportional;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Controllers.PID;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
 public class Drive extends Subsystem {
+    public boolean isRunning;
 
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -25,9 +27,6 @@ public class Drive extends Subsystem {
     private LinearOpMode opmode;
 
     private int count;
-
-    public boolean isRunning;
-    public boolean stopped;
 
     public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, Odometer2 Odometree, LinearOpMode oppy) {
 
@@ -85,6 +84,8 @@ public class Drive extends Subsystem {
     //Autonomous Methods ===========================================================================
 
     public void pointInDirection(double direction) { // Verified
+        isRunning = true;
+
         ConstantP turn = new ConstantP(0.5, 20, 0.025);
         double correction = 10;
 
@@ -104,9 +105,11 @@ public class Drive extends Subsystem {
                 break;
             }
         }
+        isRunning = false;
     }
 
     public void pointInDirectionRough(double direction, double threshold) { // Verified
+        isRunning = true;
 
         ConstantP turn = new ConstantP(0.6, 30, 0.5);
         double correction = 10;
@@ -129,9 +132,11 @@ public class Drive extends Subsystem {
                 break;
             }
         }
+        isRunning = false;
     }
             
     public void strafeToPointOrient(double x, double y, double heading, double posThreshold, double headThreshold) { // Verified
+        isRunning = true;
 
         count = 0;
 
@@ -171,9 +176,11 @@ public class Drive extends Subsystem {
                 break;
             }
         }
+        isRunning = false;
     }
 
     public void goToPointStraight(double x, double y, double threshold) {
+        isRunning = true;
 
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
@@ -202,9 +209,11 @@ public class Drive extends Subsystem {
                 break;
             }
         }
+        isRunning = false;
     }
 
     public void goToPointCurve(double x, double y, double power, double threshold) {
+        isRunning = true;
 
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
@@ -235,7 +244,10 @@ public class Drive extends Subsystem {
                 break;
             }
         }
+        isRunning = false;
     }
+
+    // Utility Methods ==============================================================================
 
     public void localize() {
         Adhameter.updateOdometry();
@@ -257,14 +269,64 @@ public class Drive extends Subsystem {
         }
     }
 
-    //Continuous Methods ===========================================================================
-
     private double cos(double theta) {
         return Math.cos(Math.toRadians(theta));
     }
 
     private double sin(double theta) {
         return Math.sin(Math.toRadians(theta));
+    }
+
+    //Continuous Methods ===========================================================================
+
+    public void handleDrive(Gamepad driver, boolean fieldCentric) {
+
+        double powerScale;
+        double x1, x2, y1, y2;
+        double rf, rb, lf, lb;
+
+        double x, y, diff, h;
+
+        if(driver.left_bumper) {
+            powerScale = 0.6;
+        }else if(driver.right_bumper) {
+            powerScale = 0.2;
+        }else {
+            powerScale = 1;
+        }
+
+        y1 = -driver.right_stick_y;
+        x1 = -driver.right_stick_x;
+        x2 = -driver.left_stick_x;
+        y2 = -driver.left_stick_y;
+
+        if(!fieldCentric) {
+            rf = (y1 + x1) * powerScale;
+            rb = (y1 - x1) * powerScale;
+            lf = (y2 - x2) * powerScale;
+            lb = (y2 + x2) * powerScale;
+
+        }else {
+            h = Adhameter.getHeadingAbsoluteDeg();
+            diff = y1 - y2;
+            x = x1 + x2;
+            y = y1 + y2;
+
+            double X = cos(-h) * x - sin(-h) * y;
+            double Y = sin(-h) * x + cos(-h) * y;
+
+            rf = (Y + X + diff/2) * powerScale;
+            rb = (Y - X + diff/2) * powerScale;
+            lf = (Y - X - diff/2) * powerScale;
+            lb = (Y + X - diff/2) * powerScale;
+
+        }
+
+        frontLeft.setPower(lf);
+        backLeft.setPower(lb);
+        frontRight.setPower(rf);
+        backRight.setPower(rb);
+
     }
 
 }
