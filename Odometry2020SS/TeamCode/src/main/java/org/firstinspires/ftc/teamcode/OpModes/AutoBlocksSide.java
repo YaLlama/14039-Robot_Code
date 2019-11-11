@@ -40,7 +40,7 @@ public class AutoBlocksSide extends LinearOpMode {
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initializeOdometry(34, 150);
+        Adham.initializeOdometry(0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
@@ -58,7 +58,11 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        Driver.strafeToPointOrient(68, 33, 0, 2, 2);
+        Driver.strafeToPointOrient(20, 20, 180, 2, 2);
+        delay(500);
+        Driver.strafeToPointOrient(-20, -20, 0, 2, 2);
+        delay(500);
+        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
 
         //Make sure nothing is still using the thread - End Autonomous period
     }

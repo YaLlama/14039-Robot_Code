@@ -39,11 +39,11 @@ public class TeleOpDrive extends LinearOpMode {
         intakeLeft = hardwareMap.dcMotor.get("leftIntake");
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
 
-        Drivetrain = new Drive(leftFront, rightFront, leftBack, rightBack, Adham, this);
-        Drivetrain.initialize();
-
         Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, 1, this);
         Adham.initializeOdometry(0, 0);
+
+        Drivetrain = new Drive(leftFront, rightFront, leftBack, rightBack, Adham, this);
+        Drivetrain.initialize();
 
         Intake = new Intake(intakeLeft, intakeRight);
         Intake.initialize(-1, 1);
@@ -77,7 +77,7 @@ public class TeleOpDrive extends LinearOpMode {
             Drivetrain.localize();
             telemetry.addData("X", Adham.getPosition()[0]);
             telemetry.addData("Y", Adham.getPosition()[1]);
-            telemetry.addData("Y", Adham.getHeadingDeg());
+            telemetry.addData("Heading", Adham.getHeadingDeg());
             telemetry.update();
 
         }
