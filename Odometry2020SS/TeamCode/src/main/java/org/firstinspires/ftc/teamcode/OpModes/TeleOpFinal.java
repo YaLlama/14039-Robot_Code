@@ -61,8 +61,8 @@ public class TeleOpFinal extends LinearOpMode {
         Intake = new Intake(intakeLeft, intakeRight);
         Intake.initialize(-1, 1);
 
-        Lift = new Extrusion(verticalExtrusion, null, 2300, 475, null, lowerLiftLimit, this);
-        Lift.initialize(0.05, 0.6);
+        //Lift = new Extrusion(verticalExtrusion, null, 2300, 475, null, lowerLiftLimit, this);
+        //Lift.initialize(0.05, 0.6);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -91,7 +91,12 @@ public class TeleOpFinal extends LinearOpMode {
             Intake.intakeManual(scorer);
 
             // Outtake =============================================================================
-            Lift.setPower(-scorer.left_stick_y);
+            //Lift.setPower(-scorer.left_stick_y);
+            if(scorer.right_bumper) {
+                verticalExtrusion.setPower(0.4);
+            }else if(scorer.left_bumper) {
+                verticalExtrusion.setPower(-0.4);
+            }
 
             telemetry.addData("Outtake Position", verticalExtrusion.getCurrentPosition());
             telemetry.addData("Limit Switch", lowerLiftLimit.getState());
