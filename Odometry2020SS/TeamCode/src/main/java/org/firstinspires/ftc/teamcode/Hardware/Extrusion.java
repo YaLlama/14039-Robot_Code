@@ -24,6 +24,7 @@ public class Extrusion extends Subsystem {
     private PID run;
 
     private double powerLowLimit;
+    private double powerHighLimit;
 
     private LinearOpMode op;
 
@@ -42,12 +43,7 @@ public class Extrusion extends Subsystem {
         run = new PID(P, I, D, 15, 0.7);
     }
 
-    public void setPowerLowLimit(double limit) {
-        powerLowLimit = limit;
-    }
-
-    public void initialize() {
-        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
+    public void initialize(double minPower, double maxPower) {
         lowSwitch.setMode(DigitalChannel.Mode.INPUT);
 
         motor1.setPower(0);
@@ -55,9 +51,30 @@ public class Extrusion extends Subsystem {
         motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        this.powerLowLimit = minPower;
+        this.powerHighLimit = maxPower;
+
     }
 
-    //Autonomous Methods ===========================================================================
+    // Utility Methods =============================================================================
+
+    public void setPower(double power) {
+        if(power > powerHighLimit) {
+            power = powerHighLimit;
+        }else if(power < -powerHighLimit) {
+            power = -powerHighLimit;
+        }
+        if(power < 0 && power > -powerLowLimit) {
+            power = -powerLowLimit;
+        }else if(power > 0 && power < powerLowLimit) {
+            power = powerLowLimit;
+        }
+
+        motor1.setPower(power);
+
+    }
+
+    // Autonomous Methods ==========================================================================
 
     public void runToPosition(double target) {
         isRunning = true;
@@ -65,7 +82,7 @@ public class Extrusion extends Subsystem {
         while(op.opModeIsActive()) {
             correct = run.getCorrection(target, motor1.getCurrentPosition());
             if (Math.abs(correct) > powerLowLimit) {
-                motor1.setPower(-correct);
+                setPower(-correct);
             }else {
                 break;
             }

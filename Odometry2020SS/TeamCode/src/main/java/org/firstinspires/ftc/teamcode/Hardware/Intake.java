@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -26,6 +27,8 @@ public class Intake extends Subsystem {
         }
     }
 
+    // TeleOp methods ==============================================================================
+
     public void intakeManual(Gamepad intaker){
 
         if(Math.abs(intaker.right_stick_x) > 0 || Math.abs(intaker.right_stick_y) > 0){
@@ -38,6 +41,8 @@ public class Intake extends Subsystem {
             intakeRight.setPower(0);
         }
     }
+
+    // Autonomous Methods ==========================================================================
 
     public void intake(double power){
         intakeLeft.setPower(power);

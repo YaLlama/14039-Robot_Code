@@ -247,7 +247,7 @@ public class Drive extends Subsystem {
         isRunning = false;
     }
 
-    // Utility Methods ==============================================================================
+    // Utility Methods =============================================================================
 
     public void localize() {
         Adhameter.updateOdometry();
@@ -277,7 +277,7 @@ public class Drive extends Subsystem {
         return Math.sin(Math.toRadians(theta));
     }
 
-    //Continuous Methods ===========================================================================
+    // Continuous Methods ==========================================================================
 
     public void handleDrive(Gamepad driver, boolean fieldCentric) {
 
@@ -312,6 +312,7 @@ public class Drive extends Subsystem {
             x = x1 + x2;
             y = y1 + y2;
 
+            //rotate movement vector clockwise by heading
             double X = cos(-h) * x - sin(-h) * y;
             double Y = sin(-h) * x + cos(-h) * y;
 
