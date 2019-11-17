@@ -138,7 +138,7 @@ public class OdometerRadians extends Subsystem{
 
             headingChange = heading - headingLastVal;
 
-            if(headingChange == 0) { // Robot has gone straight/not moved
+            if(headingChange == 0) { // RobotHardware has gone straight/not moved
 
                 posChangeLR[0] = 0;
                 posChangeLR[1] = rightChange;

@@ -40,7 +40,7 @@ public class TeleOpDrive extends LinearOpMode {
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
 
         Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, 1, this);
-        Adham.initializeOdometry(0, 0);
+        Adham.initialize(0, 0, 0);
 
         Drivetrain = new Drive(leftFront, rightFront, leftBack, rightBack, Adham, this);
         Drivetrain.initialize();

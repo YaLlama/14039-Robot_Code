@@ -27,6 +27,7 @@ public class Odometer2 extends Subsystem{
     private double lastX;
     private double lastY;
     private double heading;
+    private double headingOffset;
     private double[] position = {0, 0};
 
     // Important variables
@@ -86,14 +87,14 @@ public class Odometer2 extends Subsystem{
 
     }
 
-    public void initializeOdometry(double X, double Y){
+    public void initialize(double X, double Y, double Heading){
 
         x = X;
         y = Y;
 
         lastX = x;
         lastY = y;
-        heading = 0;
+        headingOffset = heading;
 
         encScale = encdrRad*2*Math.PI/ticksPerRotation*gear;
 
@@ -127,6 +128,7 @@ public class Odometer2 extends Subsystem{
 
             // Calculates direction
             heading = (right - left)/2/robotRad;
+            heading = heading + headingOffset;
 
             rightChange = right - rightLastVal;
             leftChange = left - leftLastVal;
@@ -136,7 +138,7 @@ public class Odometer2 extends Subsystem{
 
             headingChange = heading - headingLastVal;
 
-            if(headingChange == 0) { // Robot has gone straight/not moved
+            if(headingChange == 0) { // RobotHardware has gone straight/not moved
 
                 posChangeLR[0] = 0;
                 posChangeLR[1] = rightChange;

@@ -62,7 +62,7 @@ public class TeleOpFinal extends LinearOpMode {
         lowerLiftLimit = hardwareMap.digitalChannel.get("lowerLiftLimit");
 
         Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, 1, this);
-        Adham.initializeOdometry(0, 0);
+        Adham.initialize(0, 0, 0);
 
         DriveTrain = new Drive(leftFront, rightFront, leftBack, rightBack, Adham, this);
         DriveTrain.initialize();
