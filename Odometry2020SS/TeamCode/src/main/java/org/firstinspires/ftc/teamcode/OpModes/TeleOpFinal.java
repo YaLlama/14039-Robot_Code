@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
@@ -28,7 +29,12 @@ public class TeleOpFinal extends LinearOpMode {
     private DcMotor intakeLeft;
     private DcMotor intakeRight;
 
-    private DcMotor verticalExtrusion;
+    private Servo gripperServo;
+    private Servo flipperServo;
+
+    private Servo blockHook;
+
+    private DcMotor liftMotor;
     private DigitalChannel lowerLiftLimit;
 
     private Drive DriveTrain;
@@ -49,7 +55,10 @@ public class TeleOpFinal extends LinearOpMode {
         intakeLeft = hardwareMap.dcMotor.get("leftIntake");
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
 
-        verticalExtrusion = hardwareMap.dcMotor.get("liftMotor");
+        gripperServo = hardwareMap.servo.get("blockHook"); // gripperServo
+        flipperServo = hardwareMap.servo.get("flipperSeprvo");
+
+        liftMotor = hardwareMap.dcMotor.get("liftMotor");
         lowerLiftLimit = hardwareMap.digitalChannel.get("lowerLiftLimit");
 
         Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, 1, this);
@@ -61,8 +70,11 @@ public class TeleOpFinal extends LinearOpMode {
         Intake = new Intake(intakeLeft, intakeRight);
         Intake.initialize(-1, 1);
 
-        //Lift = new Extrusion(verticalExtrusion, null, 2300, 475, null, lowerLiftLimit, this);
-        //Lift.initialize(0.05, 0.6);
+        Lift = new Extrusion(liftMotor, null, 2300, 475, lowerLiftLimit, this);
+        Lift.initialize(0.1, 0.6);
+
+        Stacker = new Outtake(Lift, gripperServo, flipperServo);
+        Stacker.initialize(0.3, 0, -1, 0);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -91,14 +103,12 @@ public class TeleOpFinal extends LinearOpMode {
             Intake.intakeManual(scorer);
 
             // Outtake =============================================================================
-            //Lift.setPower(-scorer.left_stick_y);
-            if(scorer.right_bumper) {
-                verticalExtrusion.setPower(0.4);
-            }else if(scorer.left_bumper) {
-                verticalExtrusion.setPower(-0.4);
-            }
+            Lift.extrudeManual(-scorer.left_stick_y, 0);
 
-            telemetry.addData("Outtake Position", verticalExtrusion.getCurrentPosition());
+            Stacker.dropManual(scorer.left_bumper);
+            //ppStacker.flipManual(scorer.right_bumper);
+
+            telemetry.addData("Outtake Position", liftMotor.getCurrentPosition());
             telemetry.addData("Limit Switch", lowerLiftLimit.getState());
             telemetry.addData("Heading", Adham.getHeadingDeg());
             telemetry.update();

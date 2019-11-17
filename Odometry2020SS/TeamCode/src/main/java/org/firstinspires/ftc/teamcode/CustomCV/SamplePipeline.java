@@ -30,12 +30,12 @@ public class SamplePipeline extends OpenCvPipeline {
     private Scalar WHITE = new Scalar(255,255,255);
     private Scalar RED = new Scalar(255, 0, 0);
 
-    private double cx0 = 130;
-    private double cy0 = 45;
-    private double cx1 = 130;
+    private double cx0 = 100;
+    private double cy0 = 35;
+    private double cx1 = 100;
     private double cy1 = 150;
-    private double cx2 = 130;
-    private double cy2 = 255;
+    private double cx2 = 100;
+    private double cy2 = 265;
 
     private int r = 5;
     private int strokeWidth = 3;
@@ -101,5 +101,17 @@ public class SamplePipeline extends OpenCvPipeline {
         Imgproc.circle(frame, new Point(cx2, cy2), r, s2, Core.FILLED);
 
         return frame;
+    }
+
+    public int getSkystonePosition() {
+        if(location == SkystoneLocation.left) {
+            return 0;
+        }else if(location == SkystoneLocation.middle) {
+            return 1;
+        }else if(location == SkystoneLocation.right) {
+            return 2;
+        }else{
+            return 404;
+        }
     }
 }

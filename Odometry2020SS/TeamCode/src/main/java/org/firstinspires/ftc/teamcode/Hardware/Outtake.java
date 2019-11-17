@@ -40,12 +40,25 @@ public class Outtake extends Subsystem {
 
     // TeleOp Methods ==============================================================================
 
-    public void drop(){
+    public void dropManual(boolean trigger){
         isRunning = true;
+        if(trigger) {
+            Gripper.setPosition(dropped);
+        }else {
+            Gripper.setPosition(clamped);
+        }
+        isRunning = false;
+
     }
 
-    public void flip(){
+    public void flipManual(boolean trigger){
         isRunning = true;
+        if(trigger) {
+            Flipper.setPosition(flipped);
+        }else {
+            Gripper.setPosition(inside);
+        }
+        isRunning = false;
 
     }
 }

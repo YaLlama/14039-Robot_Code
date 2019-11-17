@@ -140,8 +140,8 @@ public class Drive extends Subsystem {
 
         count = 0;
 
-        PID holdX = new PID(0.05, 0.002, 0.01, 7, 0.3);
-        PID holdY = new PID(0.05, 0.002, 0.01, 7, 0.3);
+        PID holdX = new PID(0.05, 0.002, 0.01, 7, 0.4);
+        PID holdY = new PID(0.05, 0.002, 0.01, 7, 0.4);
         Proportional orient = new Proportional(0.02, 0.4);
         
         double Xdiff = x - Adhameter.getPosition()[0];
@@ -176,7 +176,19 @@ public class Drive extends Subsystem {
                 break;
             }
         }
+        frontRight.setPower(0);
+        backRight.setPower(0);
+        frontLeft.setPower(0);
+        backLeft.setPower(0);
         isRunning = false;
+    }
+
+    public void moveByAmount(double xChange, double yChange, double headingChange) {
+        double x = Adhameter.getPosition()[0];
+        double y = Adhameter.getPosition()[1];
+        double heading = Adhameter.getHeadingAbsoluteDeg();
+        strafeToPointOrient(x + xChange, y + yChange, heading + headingChange, 2, 2);
+
     }
 
     public void goToPointStraight(double x, double y, double threshold) {

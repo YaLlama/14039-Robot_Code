@@ -58,7 +58,7 @@ public class Odometer2 extends Subsystem{
 
     //Important constants
     private double robotRad = 16.55; // Radius of the robot (Left to Right / 2)
-    private double backRad = 18.89; // Distance from the center to the back Omni
+    private double backRad = 17.78; // Distance from the center to the back Omni
     private final double encdrRad = 1.876; // Radius of the Omni wheel
     private final double ticksPerRotation = 1440; //How many ticks are in 1 revolution of the encoder FAX
     private double gear = 1.333; //How many times does the Omni spin for each spin of the encoder
@@ -88,10 +88,11 @@ public class Odometer2 extends Subsystem{
 
     public void initializeOdometry(double X, double Y){
 
-        x = 0;
-        y = 0;
-        lastX = 0;
-        lastY = 0;
+        x = X;
+        y = Y;
+
+        lastX = x;
+        lastY = y;
         heading = 0;
 
         encScale = encdrRad*2*Math.PI/ticksPerRotation*gear;
