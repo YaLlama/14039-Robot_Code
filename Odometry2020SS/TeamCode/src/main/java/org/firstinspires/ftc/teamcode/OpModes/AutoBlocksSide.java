@@ -62,7 +62,7 @@ public class AutoBlocksSide extends LinearOpMode {
         blockHook.setPosition(1);
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initialize(23, 78, 180);
+        Adham.initialize(23, 78, 0);
 
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
@@ -96,6 +96,7 @@ public class AutoBlocksSide extends LinearOpMode {
 
         Driver.strafeToPointOrient(64, 95, 180, 2, 1);
         scanSkystone();
+        delay(2000);
         if(skyPosition == 0) {
             Driver.strafeToPointOrient(94, 82, 180, 2, 1);
             blockHook.setPosition(0.1);
@@ -116,6 +117,17 @@ public class AutoBlocksSide extends LinearOpMode {
         skyPosition = pipeline.getSkystonePosition();
         if(skyPosition == 404) {
             scanSkystone();
+        }
+    }
+    public void delay(int millis) {
+        int limit = (int)(millis/2);
+        for(int x=0;x<limit; x++) {
+            if (opModeIsActive()) {
+                Driver.localize();
+                try{Thread.sleep(2);}catch(InterruptedException e){e.printStackTrace();}
+            }else {
+                break;
+            }
         }
     }
 }

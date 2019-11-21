@@ -42,6 +42,9 @@ public class TeleOpFinal extends LinearOpMode {
 
     private Servo clamper;
     private Servo blue;
+    double r=0;
+    double p=0;
+
     private Intake Intake;
     private Extrusion Lift;
     private Outtake Stacker;
@@ -54,14 +57,13 @@ public class TeleOpFinal extends LinearOpMode {
         leftBack = hardwareMap.dcMotor.get("backEncoder");
         rightBack = hardwareMap.dcMotor.get("rightBack");
 
-        clamper = hardwareMap.servo.get("clamper");
-        blue = hardwareMap.servo.get("bluepart");
-
         intakeLeft = hardwareMap.dcMotor.get("leftIntake");
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
 
-        gripperServo = hardwareMap.servo.get("blockHook"); // gripperServo
-        flipperServo = hardwareMap.servo.get("flipperSeprvo");
+        gripperServo = hardwareMap.servo.get("blockHook");
+
+        clamper = hardwareMap.servo.get("clamper");
+        blue = hardwareMap.servo.get("bluepart");
 
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
         lowerLiftLimit = hardwareMap.digitalChannel.get("lowerLiftLimit");
@@ -101,8 +103,26 @@ public class TeleOpFinal extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if(scorer.right_stick_y > 0.2){
 
+            if(gamepad2.right_stick_y > 0.2){
+                clamper.setPosition(r);
+
+                r= r+0.05;
+
+            } else if(gamepad2.right_stick_y < 0.2){
+                clamper.setPosition(r);
+                r= r - 0.05;
+
+            }
+
+            if(gamepad2.left_stick_y > 0.2){
+                blue.setPosition(r);
+
+                p= p+0.05;
+
+            } else if(gamepad2.left_stick_y < 0.2){
+                blue.setPosition(r);
+                p= p - 0.05;
 
             }
 

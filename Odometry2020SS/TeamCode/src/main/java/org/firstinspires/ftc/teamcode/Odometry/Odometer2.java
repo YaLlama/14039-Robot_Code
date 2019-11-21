@@ -59,7 +59,7 @@ public class Odometer2 extends Subsystem{
 
     //Important constants
     private double robotRad = 16.56; // Radius of the robot (Left to Right / 2)
-    private double backRad = 1; // Distance from the center to the back Omni
+    private double backRad = 0.9; // Distance from the center to the back Omni
     private final double encdrRad = 1.876; // Radius of the Omni wheel
     private final double ticksPerRotation = 1440; //How many ticks are in 1 revolution of the encoder FAX
     private double gear = 1.333; //How many times does the Omni spin for each spin of the encoder
@@ -91,10 +91,11 @@ public class Odometer2 extends Subsystem{
 
         x = X;
         y = Y;
-
         lastX = x;
         lastY = y;
-        headingOffset = heading;
+
+        headingOffset = Heading;
+        headingLastVal = headingOffset;
 
         encScale = encdrRad*2*Math.PI/ticksPerRotation*gear;
 
@@ -110,7 +111,6 @@ public class Odometer2 extends Subsystem{
         rightLastVal = 0;
         leftLastVal = 0;
         backLastVal = 0;
-        headingLastVal = 0;
 
         rightEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -127,8 +127,7 @@ public class Odometer2 extends Subsystem{
             back = backEnc.getCurrentPosition() * encScale * backEncDir;
 
             // Calculates direction
-            heading = (right - left)/2/robotRad;
-            heading = heading + headingOffset;
+            heading = (right - left)/2/robotRad + headingOffset;
 
             rightChange = right - rightLastVal;
             leftChange = left - leftLastVal;
@@ -227,6 +226,10 @@ public class Odometer2 extends Subsystem{
         return Math.toDegrees(heading) % 360;
     }
 
+    public double getHeadingOffset() {
+
+        return headingOffset;
+    }
     public double[] getPosition() {
 
         position[0] = x;
