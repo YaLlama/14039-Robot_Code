@@ -40,6 +40,8 @@ public class TeleOpFinal extends LinearOpMode {
     private Drive DriveTrain;
     private Odometer2 Adham;
 
+    private Servo clamper;
+    private Servo blue;
     private Intake Intake;
     private Extrusion Lift;
     private Outtake Stacker;
@@ -51,6 +53,9 @@ public class TeleOpFinal extends LinearOpMode {
         leftFront = hardwareMap.dcMotor.get("leftEncoder");
         leftBack = hardwareMap.dcMotor.get("backEncoder");
         rightBack = hardwareMap.dcMotor.get("rightBack");
+
+        clamper = hardwareMap.servo.get("clamper");
+        blue = hardwareMap.servo.get("bluepart");
 
         intakeLeft = hardwareMap.dcMotor.get("leftIntake");
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
@@ -76,6 +81,7 @@ public class TeleOpFinal extends LinearOpMode {
         Stacker = new Outtake(Lift, gripperServo, flipperServo);
         Stacker.initialize(0.3, 0, -1, 0);
 
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -95,6 +101,10 @@ public class TeleOpFinal extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            if(scorer.right_stick_y > 0.2){
+
+
+            }
 
             // Driving =============================================================================
             DriveTrain.handleDrive(driver, false);

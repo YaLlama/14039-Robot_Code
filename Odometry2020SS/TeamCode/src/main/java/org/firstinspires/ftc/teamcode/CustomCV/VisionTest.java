@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.CustomCV;
-
+/*
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -40,7 +40,7 @@ public class VisionTest extends LinearOpMode {
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initializeOdometry(0, 0);
+        Adham.initialize(x, y, theta);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
@@ -81,3 +81,5 @@ public class VisionTest extends LinearOpMode {
         }
     }
 }
+
+*/
