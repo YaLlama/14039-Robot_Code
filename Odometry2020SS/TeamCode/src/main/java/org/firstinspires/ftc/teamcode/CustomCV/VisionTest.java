@@ -3,16 +3,13 @@ package org.firstinspires.ftc.teamcode.CustomCV;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.CustomCV.SamplePipeline;
+
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
-import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
-import org.firstinspires.ftc.teamcode.SkystoneLocation;
+
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
-
-import java.nio.file.AccessDeniedException;
 
 @TeleOp(name="Vision Test", group = "Linear Opmode")
 public class VisionTest extends LinearOpMode {
