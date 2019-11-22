@@ -5,12 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
-
-@Autonomous(name="Bare Bones Auto", group="Linear Opmode")
 @Disabled
+@Autonomous(name="Bare Bones Auto", group="Linear Opmode")
 
 public class BareAutoL extends LinearOpMode {
 

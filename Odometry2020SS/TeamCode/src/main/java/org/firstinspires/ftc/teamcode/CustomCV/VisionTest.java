@@ -12,10 +12,14 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
+import java.nio.file.AccessDeniedException;
+
 @TeleOp(name="Vision Test", group = "Linear Opmode")
 public class VisionTest extends LinearOpMode {
 
-    OpenCvCamera phoneCam;
+    private OpenCvCamera phoneCam;
+    private SamplePipeline pipeline;
+
     private DcMotor RightFront;
     private DcMotor RightBack;
     private DcMotor LeftFront;
@@ -26,7 +30,6 @@ public class VisionTest extends LinearOpMode {
     private Odometer2 Adham;
 
     private Drive Driver;
-
 
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
@@ -40,10 +43,19 @@ public class VisionTest extends LinearOpMode {
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initialize(x, y, theta);
+        Adham.initialize(0, 0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+
+        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phoneCam.openCameraDevice();
+
+        pipeline = new SamplePipeline();
+
+        phoneCam.setPipeline(pipeline);
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
@@ -53,29 +65,19 @@ public class VisionTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         initialize();
-
         waitForStart();
-
         telemetry.addData("Status: ", "Running");
         telemetry.update();
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-
-        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        phoneCam.openCameraDevice();
-
-        SamplePipeline pipeline = new SamplePipeline();
-
-        phoneCam.setPipeline(pipeline);
-
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
-        while (opModeIsActive())
-        {
-            telemetry.addData("FPS", String.format("%.2f", phoneCam.getFps()));
-            telemetry.addData("location", pipeline.location);
-            telemetry.addData("type", pipeline.location.getClass());
+        while (opModeIsActive()) {
+            telemetry.addData("x", Adham.getPosition()[0]);
+            telemetry.addData("Y", Adham.getPosition()[1]);
+            telemetry.addData("H", Adham.getHeadingAbsoluteDeg());
             telemetry.update();
+
+            Driver.localize();
 
             sleep(100);
         }

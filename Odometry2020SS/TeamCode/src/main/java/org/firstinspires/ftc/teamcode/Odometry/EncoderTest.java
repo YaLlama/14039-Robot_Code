@@ -48,7 +48,6 @@ public class EncoderTest extends LinearOpMode {
         while(opModeIsActive()) {
 
             telemetry.addData("Right Encoder Value ", Encoder.getCurrentPosition());
-            telemetry.addData("Right Encoder Distance CM ", Encoder.getCurrentPosition() * encScale);
             telemetry.addData("Left Encoder Value ", Encoder1.getCurrentPosition());
             telemetry.addData("Back Encoder Value ", Encoder2.getCurrentPosition());
             telemetry.update();

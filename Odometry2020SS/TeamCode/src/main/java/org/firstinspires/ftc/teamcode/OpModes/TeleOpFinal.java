@@ -29,21 +29,24 @@ public class TeleOpFinal extends LinearOpMode {
     private DcMotor intakeLeft;
     private DcMotor intakeRight;
 
-    private Servo gripperServo;
-    private Servo flipperServo;
+    private DcMotor liftMotor1;
+    private DcMotor liftMotor2;
 
-    private Servo blockHook;
-
-    private DcMotor liftMotor;
     private DigitalChannel lowerLiftLimit;
+
+    private Servo foundation1;
+    private Servo foundation2;
 
     private Drive DriveTrain;
     private Odometer2 Adham;
 
-    private Servo clamper;
-    private Servo blue;
-    double r=0;
-    double p=0;
+    private Servo gripperServoP;
+    private Servo gripperServoC;
+
+    private Servo flipperServoR;
+    private Servo flipperServoL;
+
+    private Servo intakeDropper;
 
     private Intake Intake;
     private Extrusion Lift;
@@ -60,13 +63,21 @@ public class TeleOpFinal extends LinearOpMode {
         intakeLeft = hardwareMap.dcMotor.get("leftIntake");
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
 
-        gripperServo = hardwareMap.servo.get("blockHook");
+        gripperServoP = hardwareMap.servo.get("gripperServoPaddle");
+        gripperServoC = hardwareMap.servo.get("gripperServoClamp");
 
-        clamper = hardwareMap.servo.get("clamper");
-        blue = hardwareMap.servo.get("bluepart");
+        flipperServoL = hardwareMap.servo.get("flipperServoLeft");
+        flipperServoR = hardwareMap.servo.get("flipperServoRight");
 
-        liftMotor = hardwareMap.dcMotor.get("liftMotor");
+        liftMotor1 = hardwareMap.dcMotor.get("liftMotor1");
+        liftMotor2 = hardwareMap.dcMotor.get("liftMotor2");
+
         lowerLiftLimit = hardwareMap.digitalChannel.get("lowerLiftLimit");
+
+        intakeDropper = hardwareMap.servo.get("intakeDropper");
+
+        foundation1 = hardwareMap.servo.get("foundationLeft");
+        foundation2 = hardwareMap.servo.get("foundationRight");
 
         Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, 1, this);
         Adham.initialize(0, 0, 0);
@@ -77,12 +88,8 @@ public class TeleOpFinal extends LinearOpMode {
         Intake = new Intake(intakeLeft, intakeRight);
         Intake.initialize(-1, 1);
 
-        Lift = new Extrusion(liftMotor, null, 2300, 475, lowerLiftLimit, this);
+        Lift = new Extrusion(liftMotor1, liftMotor2, 2300, 475, lowerLiftLimit, this);
         Lift.initialize(0.1, 0.6);
-
-        Stacker = new Outtake(Lift, gripperServo, flipperServo);
-        Stacker.initialize(0.3, 0, -1, 0);
-
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -104,28 +111,6 @@ public class TeleOpFinal extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            if(gamepad2.right_stick_y > 0.2){
-                clamper.setPosition(r);
-
-                r= r+0.05;
-
-            } else if(gamepad2.right_stick_y < 0.2){
-                clamper.setPosition(r);
-                r= r - 0.05;
-
-            }
-
-            if(gamepad2.left_stick_y > 0.2){
-                blue.setPosition(r);
-
-                p= p+0.05;
-
-            } else if(gamepad2.left_stick_y < 0.2){
-                blue.setPosition(r);
-                p= p - 0.05;
-
-            }
-
             // Driving =============================================================================
             DriveTrain.handleDrive(driver, false);
 
@@ -138,7 +123,7 @@ public class TeleOpFinal extends LinearOpMode {
             Stacker.dropManual(scorer.left_bumper);
             //ppStacker.flipManual(scorer.right_bumper);
 
-            telemetry.addData("Outtake Position", liftMotor.getCurrentPosition());
+            telemetry.addData("Outtake Position", liftMotor1.getCurrentPosition());
             telemetry.addData("Limit Switch", lowerLiftLimit.getState());
             telemetry.addData("Heading", Adham.getHeadingDeg());
             telemetry.update();

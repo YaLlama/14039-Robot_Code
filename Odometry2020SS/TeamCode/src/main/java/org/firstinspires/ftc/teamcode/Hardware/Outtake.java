@@ -8,30 +8,37 @@ public class Outtake extends Subsystem {
     public boolean isRunning;
 
     private Extrusion VerticalExtrusion;
-    private Servo Gripper;
+    private Servo GripperC;
+    private Servo GripperP;
     private Servo Flipper;
 
     // Servo values for flipper
     private double flipped;
     private double inside;
     // Servo values for clamp
-    private double clamped;
-    private double dropped;
+    private double clampedC;
+    private double droppedC;
+    private double clampedP;
+    private double droppedP;
 
-    public Outtake(Extrusion VerticalExtrusion, Servo Gripper, Servo Flipper) {
+    public Outtake(Extrusion VerticalExtrusion, Servo GripperC, Servo GripperP, Servo Flipper) {
         this.VerticalExtrusion = VerticalExtrusion;
         this.Flipper = Flipper;
-        this.Gripper = Gripper;
+        this.GripperC = GripperC;
+        this.GripperP = GripperP;
 
     }
 
-    public void initialize(double clamped, double dropped, double flipped, double inside){
-        this.clamped = clamped;
-        this.dropped = dropped;
+    public void initialize(double clampedC, double droppedC, double clampedP, double droppedP, double flipped, double inside){
+        this.clampedC = clampedC;
+        this.droppedC = droppedC;
+        this.clampedP = clampedP;
+        this.droppedP = droppedP;
         this.flipped = flipped;
         this.inside = inside;
 
-        Gripper.setPosition(dropped);
+        GripperC.setPosition(droppedC);
+        GripperP.setPosition(droppedP);
         Flipper.setPosition(inside);
 
     }
@@ -43,9 +50,9 @@ public class Outtake extends Subsystem {
     public void dropManual(boolean trigger){
         isRunning = true;
         if(trigger) {
-            Gripper.setPosition(dropped);
+            GripperC.setPosition(droppedC);
         }else {
-            Gripper.setPosition(clamped);
+            GripperC.setPosition(clampedC);
         }
         isRunning = false;
 
@@ -56,7 +63,7 @@ public class Outtake extends Subsystem {
         if(trigger) {
             Flipper.setPosition(flipped);
         }else {
-            Gripper.setPosition(inside);
+            GripperC.setPosition(inside);
         }
         isRunning = false;
 
