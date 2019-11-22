@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Hardware;
-
+/*
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -31,7 +31,7 @@ public class DriveTest extends LinearOpMode {
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initialize(0, 0, 0);
+        Adham.initializeOdometry(0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
@@ -68,3 +68,4 @@ public class DriveTest extends LinearOpMode {
     }
 
 }
+*/
