@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.CustomCV;
-/*
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 @TeleOp(name="Vision Test", group = "Linear Opmode")
 public class VisionTest extends LinearOpMode {
 
-    OpenCvCamera phoneCam;
+    private OpenCvCamera phoneCam;
     private DcMotor RightFront;
     private DcMotor RightBack;
     private DcMotor LeftFront;
@@ -44,6 +44,15 @@ public class VisionTest extends LinearOpMode {
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
+        
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+
+        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phoneCam.openCameraDevice();
+
+        SamplePipeline pipeline = new SamplePipeline();
+
+        phoneCam.setPipeline(pipeline);
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
@@ -59,15 +68,6 @@ public class VisionTest extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-
-        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        phoneCam.openCameraDevice();
-
-        SamplePipeline pipeline = new SamplePipeline();
-
-        phoneCam.setPipeline(pipeline);
-
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
         while (opModeIsActive())
@@ -81,5 +81,3 @@ public class VisionTest extends LinearOpMode {
         }
     }
 }
-
-*/
