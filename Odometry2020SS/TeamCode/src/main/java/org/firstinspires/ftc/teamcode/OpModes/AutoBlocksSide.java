@@ -64,7 +64,6 @@ public class AutoBlocksSide extends LinearOpMode {
         Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
         Adham.initialize(23, 78, 0);
 
-
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
 
@@ -119,6 +118,7 @@ public class AutoBlocksSide extends LinearOpMode {
             scanSkystone();
         }
     }
+
     public void delay(int millis) {
         int limit = (int)(millis/2);
         for(int x=0;x<limit; x++) {
