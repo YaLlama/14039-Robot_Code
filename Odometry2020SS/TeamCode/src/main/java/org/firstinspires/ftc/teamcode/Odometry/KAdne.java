@@ -1,15 +1,14 @@
-package org.firstinspires.ftc.teamcode.Hardware;
+package org.firstinspires.ftc.teamcode.Odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
-import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
 
-@Autonomous(name="Drive Test", group="Linear Opmode")
+@Autonomous(name="OdometerKAdent", group="Linear Opmode")
 
-public class DriveTest extends LinearOpMode {
+public class KAdne extends LinearOpMode {
 
     // Declare OpMode members.
     private DcMotor RightFront;
@@ -48,18 +47,35 @@ public class DriveTest extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
+        int count = 0;
 
-        Driver.pointInDirection(90);
-        Driver.pointInDirection(180);
-        Driver.pointInDirection(0);
+        while(opModeIsActive()) {
+            while(Adham.getPosition()[0] < 40){
+                getShit();
 
-        Driver.strafeToPointOrient(0, 20, 0, 2, 2);
-        Driver.strafeToPointOrient(0, -20, 0, 2, 2);
-        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(20, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(-20, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
+            }
 
+
+
+
+
+            
+        }
+
+        /*
+        double initialX = Adham.getPosition()[0];
+        double initialY = Adham.getPosition()[1];
+
+        delay(2000);
+
+        double changeX = Adham.getPosition()[0] - initialX;
+        double changeY = Adham.getPosition()[1] - initialY;
+
+        double distance = Math.sqrt(changeX * changeX + changeY * changeY);
+
+        telemetry.addData("Drift", distance);
+        telemetry.update();
+         */
         //Make sure nothing is still using the thread
     }
 
@@ -72,6 +88,20 @@ public class DriveTest extends LinearOpMode {
                 break;
             }
         }
+    }
+
+    private void getShit(){
+        telemetry.addData("heading", Adham.getHeadingAbsoluteDeg());
+        telemetry.addData("X", Adham.getPosition()[0]);
+        telemetry.addData("Y", Adham.getPosition()[1]);
+
+        telemetry.addData("right", Adham.getRightReading());
+        telemetry.addData("left", Adham.getLeftReading());
+        telemetry.addData("back", Adham.getBackReading());
+
+        telemetry.update();
+
+        Driver.localize();
     }
 
 }

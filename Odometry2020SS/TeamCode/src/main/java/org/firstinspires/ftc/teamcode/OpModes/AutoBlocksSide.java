@@ -61,8 +61,8 @@ public class AutoBlocksSide extends LinearOpMode {
         blockHook = hardwareMap.servo.get("blockHook");
         blockHook.setPosition(1);
 
-        Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, 1, this);
-        Adham.initialize(23, 78, 0);
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, -1, this);
+        Adham.initialize(0, 0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
         Driver.initialize();
@@ -93,33 +93,40 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        Driver.strafeToPointOrient(64, 95, 180, 2, 1);
+        Driver.strafeToPointOrient(-46, 0, 0, 1, 1);
+        telemetry.addData("X", Adham.getPosition()[0]);
+        telemetry.addData("y", Adham.getPosition()[1]);
+        telemetry.addData("H", Adham.getHeadingAbsoluteDeg());
+        telemetry.update();
+        delay(2000);
         scanSkystone();
+        telemetry.addData("pos", skyPosition);
+
         delay(2000);
         if(skyPosition == 0) {
-            Driver.strafeToPointOrient(94, 82, 180, 2, 1);
+            Driver.strafeToPointOrient(-85, -40, 0, 2, 1);
             blockHook.setPosition(0.1);
         }else if(skyPosition == 1) {
-            Driver.strafeToPointOrient(94, 101, 180, 2, 1);
+            Driver.strafeToPointOrient(-85, -16, 0, 2, 1);
             blockHook.setPosition(0.1);
         }else if(skyPosition == 2) {
-            Driver.strafeToPointOrient(64, 122, 180, 2, 1);
+            Driver.strafeToPointOrient(-85, 2, 0, 2, 1);
             blockHook.setPosition(0.1);
         }
-
-
 
         //Make sure nothing is still using the thread - End Autonomous period
     }
 
     private void scanSkystone(){
+        telemetry.addData("Scanning", "");
+        telemetry.update();
         skyPosition = pipeline.getSkystonePosition();
         if(skyPosition == 404) {
             scanSkystone();
         }
     }
 
-    public void delay(int millis) {
+    private void delay(int millis) {
         int limit = (int)(millis/2);
         for(int x=0;x<limit; x++) {
             if (opModeIsActive()) {

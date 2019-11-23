@@ -64,7 +64,6 @@ public class Drive extends Subsystem {
 
     public void testMotors() {
 
-
         if(opmode.opModeIsActive()){
             delay(600);
             frontRight.setPower(0.4);
