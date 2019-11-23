@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Odometry;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,6 +23,9 @@ public class OdometerTest extends LinearOpMode {
     private Odometer2 Adham;
     private Drive Driver;
 
+    private BNO055IMU Imu;
+    private BNO055IMU.Parameters Params;
+
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
         telemetry.update();
@@ -31,7 +36,17 @@ public class OdometerTest extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("backEncoder");
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
-        Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, -1, this);
+        Params = new BNO055IMU.Parameters();
+        Params.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        Params.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        Params.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opMode
+        Params.loggingEnabled      = true;
+        Params.loggingTag          = "IMU";
+        Params.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        Imu = hardwareMap.get(BNO055IMU.class, "imu");
+        Imu.initialize(Params);
+
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, Imu, -1, -1, -1, this);
         Adham.initialize(0, 0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
@@ -53,8 +68,6 @@ public class OdometerTest extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-
-
             telemetry.addData("heading", Adham.getHeadingAbsoluteDeg());
             telemetry.addData("X", Adham.getPosition()[0]);
             telemetry.addData("Y", Adham.getPosition()[1]);
@@ -62,13 +75,11 @@ public class OdometerTest extends LinearOpMode {
             telemetry.addData("right", Adham.getRightReading());
             telemetry.addData("left", Adham.getLeftReading());
             telemetry.addData("back", Adham.getBackReading());
-
+            telemetry.addData("headinglast val", Adham.getHeadingLastVal());
             telemetry.update();
 
             Driver.localize();
 
-
-            
         }
 
         /*

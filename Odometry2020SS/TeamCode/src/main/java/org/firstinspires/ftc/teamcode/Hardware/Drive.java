@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Controllers.Proportional;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
+import org.firstinspires.ftc.teamcode.Odometry.OdometerIMU;
 import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
@@ -23,6 +24,7 @@ public class Drive extends Subsystem {
     private DcMotor backRight;
 
     private Odometer2 Adhameter;
+    //private OdometerIMU Adhameter;
 
     private LinearOpMode opmode;
 

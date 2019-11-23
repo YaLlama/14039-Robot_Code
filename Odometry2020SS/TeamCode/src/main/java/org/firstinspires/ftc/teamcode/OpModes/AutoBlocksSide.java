@@ -61,7 +61,7 @@ public class AutoBlocksSide extends LinearOpMode {
         blockHook = hardwareMap.servo.get("blockHook");
         blockHook.setPosition(1);
 
-        Adham = new Odometer2(RightFront, LeftFront, LeftBack, -1, -1, -1, this);
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, null, -1, -1, -1, this);
         Adham.initialize(0, 0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);

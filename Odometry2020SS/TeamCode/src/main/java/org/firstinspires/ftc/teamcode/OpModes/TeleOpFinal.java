@@ -79,7 +79,7 @@ public class TeleOpFinal extends LinearOpMode {
         foundation1 = hardwareMap.servo.get("foundationLeft");
         foundation2 = hardwareMap.servo.get("foundationRight");
 
-        Adham = new Odometer2(rightFront, leftFront, leftBack, -1, -1, -1, this);
+        Adham = new Odometer2(rightFront, leftFront, leftBack, null, -1, -1, -1, this);
         Adham.initialize(0, 0, 0);
 
         DriveTrain = new Drive(leftFront, rightFront, leftBack, rightBack, Adham, this);

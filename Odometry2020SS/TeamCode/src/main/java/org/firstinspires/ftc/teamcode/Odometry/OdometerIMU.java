@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
-public class Odometer2 extends Subsystem{
+public class OdometerIMU extends Subsystem{
 
     // Declare all objects needed for Odometry
 
@@ -81,7 +81,7 @@ public class Odometer2 extends Subsystem{
     private LinearOpMode opmode;
 
     //3 Encoder objects, The distance from the L and R Omni's to the center, The distance from the back Omni to the center, the radius of the Omni
-    public Odometer2(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, BNO055IMU imu, double RD, double LD, double BD, LinearOpMode oppy){
+    public OdometerIMU(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, BNO055IMU imu, double RD, double LD, double BD, LinearOpMode oppy){
 
         this.rightEnc = rightEncoder;
         this.leftEnc = leftEncoder;
@@ -105,7 +105,7 @@ public class Odometer2 extends Subsystem{
         lastY = y;
 
         headingOffset = Heading;
-        headingLastVal = 0;
+        headingLastVal = headingOffset;
 
         encScale = encdrRad*2*Math.PI/ticksPerRotation*gear;
 
@@ -137,8 +137,8 @@ public class Odometer2 extends Subsystem{
             back = backEnc.getCurrentPosition() * encScale * backEncDir;
 
             // Calculates direction
-           // heading = getImuHeading() + headingOffset;
-            heading = getImuHeading();
+            heading = (right - left)/2/robotRad + headingOffset;
+
             rightChange = right - rightLastVal;
             leftChange = left - leftLastVal;
             backChange = back - backLastVal;
@@ -238,10 +238,6 @@ public class Odometer2 extends Subsystem{
 
     public double getHeadingDeg() {
         return Math.toDegrees(heading);
-    }
-
-    public double getHeadingLastVal() {
-        return headingLastVal;
     }
 
     public double getHeadingAbsoluteDeg() {
