@@ -8,13 +8,15 @@ This is a simple proportional control loop.
 public class Proportional extends Controller {
 
     private double pGain;
-    private double lim;
+    private double lim; // Upper limit
     private double error = 1000;
+    private double offset;
 
-    public Proportional(double p_Gain, double limit) {
+    public Proportional(double p_Gain, double limit, double offset) {
         
         this.pGain = p_Gain;
         this.lim = limit;
+        this.offset = offset;
 
     }
 
@@ -22,6 +24,7 @@ public class Proportional extends Controller {
 
         error = target - current;
         double correction = error * pGain;
+        correction = correction + offset;
         
         if(correction > lim) {
             correction = lim;

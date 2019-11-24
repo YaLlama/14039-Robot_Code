@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware.Drive;
-import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
-import org.firstinspires.ftc.teamcode.Subsystem;
 
 @Autonomous(name="Odometer Test", group="Linear Opmode")
 
@@ -75,27 +73,11 @@ public class OdometerTest extends LinearOpMode {
             telemetry.addData("right", Adham.getRightReading());
             telemetry.addData("left", Adham.getLeftReading());
             telemetry.addData("back", Adham.getBackReading());
-            telemetry.addData("headinglast val", Adham.getHeadingLastVal());
             telemetry.update();
 
             Driver.localize();
 
         }
-
-        /*
-        double initialX = Adham.getPosition()[0];
-        double initialY = Adham.getPosition()[1];
-
-        delay(2000);
-
-        double changeX = Adham.getPosition()[0] - initialX;
-        double changeY = Adham.getPosition()[1] - initialY;
-
-        double distance = Math.sqrt(changeX * changeX + changeY * changeY);
-
-        telemetry.addData("Drift", distance);
-        telemetry.update();
-         */
         //Make sure nothing is still using the thread
     }
 

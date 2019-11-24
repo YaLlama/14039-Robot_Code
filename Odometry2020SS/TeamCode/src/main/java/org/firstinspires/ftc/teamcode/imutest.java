@@ -30,7 +30,7 @@ import java.util.Locale;
  */
 @TeleOp(name = "IMU test", group = "Sensor")
                        // Comment this out to add to the opmode list
-public class imutest extends LinearOpMode
+public class ImuTest extends LinearOpMode
 {
     //----------------------------------------------------------------------------------------------
     // State

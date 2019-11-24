@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.Controllers.CustomMove;
 import org.firstinspires.ftc.teamcode.Controllers.Proportional;
 import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
-import org.firstinspires.ftc.teamcode.Odometry.OdometerIMU;
-import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
 
 import org.firstinspires.ftc.teamcode.Controllers.ConstantP;
 import org.firstinspires.ftc.teamcode.Controllers.PID;
@@ -24,20 +21,20 @@ public class Drive extends Subsystem {
     private DcMotor backRight;
 
     private Odometer2 Adhameter;
-    //private OdometerIMU Adhameter;
+    //private Odometer1 Adhameter;
 
     private LinearOpMode opmode;
 
     private int count;
 
-    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, Odometer2 Odometree, LinearOpMode oppy) {
+    public Drive(DcMotor Lf, DcMotor Rf, DcMotor Lb, DcMotor Rb, Odometer2 Odometree, LinearOpMode opmode) {
 
         this.frontLeft = Lf;
         this.frontRight = Rf;
         this.backLeft = Lb;
         this.backRight = Rb;
         this.Adhameter = Odometree;
-        this.opmode = oppy;
+        this.opmode = opmode;
 
     }
 
@@ -47,6 +44,11 @@ public class Drive extends Subsystem {
         frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontRight.setPower(0);
         frontLeft.setPower(0);
@@ -61,6 +63,14 @@ public class Drive extends Subsystem {
         count = 0;
 
         isRunning = true;
+
+    }
+
+    public void setFloat() {
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
     }
 
@@ -93,7 +103,7 @@ public class Drive extends Subsystem {
 
         while (Math.abs(correction) > 0.1) {
             if(opmode.opModeIsActive()) {
-                correction = turn.getCorrection(direction, Adhameter.getHeadingDeg());
+                correction = turn.getCorrection(direction, Adhameter.getHeadingAbsoluteDeg());
 
                 frontLeft.setPower(-correction);
                 backLeft.setPower(-correction);
@@ -119,7 +129,7 @@ public class Drive extends Subsystem {
 
         while (Math.abs(error) > threshold) {
             if(opmode.opModeIsActive()) {
-                correction = turn.getCorrection(direction, Adhameter.getHeadingDeg());
+                correction = turn.getCorrection(direction, Adhameter.getHeadingAbsoluteDeg());
 
                 frontLeft.setPower(-correction);
                 backLeft.setPower(-correction);
@@ -142,9 +152,13 @@ public class Drive extends Subsystem {
 
         count = 0;
 
-        PID holdX = new PID(0.05, 0.002, 0.01, 7, 0.4);
-        PID holdY = new PID(0.05, 0.002, 0.01, 7, 0.4);
-        Proportional orient = new Proportional(0.02, 0.4);
+        CustomMove holdX = new CustomMove(1);
+        CustomMove holdY = new CustomMove(1);
+        Proportional orient = new Proportional(0.02, 0.3, 0);
+
+        //Proportional holdX = new Proportional(0.03, 0.5, 0.3);
+        //Proportional holdY = new Proportional(0.03, 0.5, 0.3);
+        //Proportional orient = new Proportional(0.02, 0.3, 0);
         
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
@@ -157,7 +171,7 @@ public class Drive extends Subsystem {
                 Ydiff = y - Adhameter.getPosition()[1];
                 distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
                 
-                double h = Adhameter.getHeadingDeg();
+                double h = Adhameter.getHeadingAbsoluteDeg();
                 
                 double XD = cos(-h) * Xdiff - sin(-h) * Ydiff;
                 double YD = sin(-h) * Xdiff + cos(-h) * Ydiff;
@@ -234,7 +248,7 @@ public class Drive extends Subsystem {
         double direction;
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
 
-        Proportional orient = new Proportional(0.02, 0.9 - power);
+        Proportional orient = new Proportional(0.02, 0.9 - power, 0);
 
         while (distance > threshold) {
             if (opmode.opModeIsActive()) {
@@ -265,7 +279,7 @@ public class Drive extends Subsystem {
 
     public void localize() {
         Adhameter.updateOdometry();
-        if(count%6 == 0) {
+        if(count%10 == 0) {
             Adhameter.integrate();
         }
         count++;

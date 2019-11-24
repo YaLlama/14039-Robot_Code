@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -52,6 +54,9 @@ public class TeleOpFinal extends LinearOpMode {
     private Extrusion Lift;
     private Outtake Stacker;
 
+    private BNO055IMU Imu;
+    private BNO055IMU.Parameters Params;
+
     private void initialize(){
         // Initialize all objects declared above
 
@@ -79,7 +84,19 @@ public class TeleOpFinal extends LinearOpMode {
         foundation1 = hardwareMap.servo.get("foundationLeft");
         foundation2 = hardwareMap.servo.get("foundationRight");
 
-        Adham = new Odometer2(rightFront, leftFront, leftBack, null, -1, -1, -1, this);
+        Params = new BNO055IMU.Parameters();
+        Params.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        Params.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        Params.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opMode
+        Params.loggingEnabled      = true;
+        Params.loggingTag          = "IMU";
+        Params.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        Imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        //==========================================================================================
+        Imu.initialize(Params);
+
+        Adham = new Odometer2(rightFront, leftFront, leftBack, Imu, -1, -1, -1, this);
         Adham.initialize(0, 0, 0);
 
         DriveTrain = new Drive(leftFront, rightFront, leftBack, rightBack, Adham, this);
@@ -118,7 +135,6 @@ public class TeleOpFinal extends LinearOpMode {
             Intake.intakeManual(scorer);
 
             // Outtake =============================================================================
-            Lift.extrudeManual(-scorer.left_stick_y, 0);
 
             Stacker.dropManual(scorer.left_bumper);
             //ppStacker.flipManual(scorer.right_bumper);

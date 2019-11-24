@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Subsystem;
 
-public class OdometerIMU extends Subsystem{
+public class Odometer1 extends Subsystem{
 
     // Declare all objects needed for Odometry
 
@@ -81,7 +81,7 @@ public class OdometerIMU extends Subsystem{
     private LinearOpMode opmode;
 
     //3 Encoder objects, The distance from the L and R Omni's to the center, The distance from the back Omni to the center, the radius of the Omni
-    public OdometerIMU(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, BNO055IMU imu, double RD, double LD, double BD, LinearOpMode oppy){
+    public Odometer1(DcMotor rightEncoder, DcMotor leftEncoder, DcMotor backEncoder, BNO055IMU imu, double RD, double LD, double BD, LinearOpMode oppy){
 
         this.rightEnc = rightEncoder;
         this.leftEnc = leftEncoder;
@@ -104,7 +104,7 @@ public class OdometerIMU extends Subsystem{
         lastX = x;
         lastY = y;
 
-        headingOffset = Heading;
+        headingOffset = Math.toRadians(Heading);
         headingLastVal = headingOffset;
 
         encScale = encdrRad*2*Math.PI/ticksPerRotation*gear;
@@ -212,14 +212,6 @@ public class OdometerIMU extends Subsystem{
 
     }
 
-    private double getImuHeading() {
-        //may need to change axis unit to work with vertical hubs -- depending on how u orient hubs, axis may have to be different.
-        Orientation angles = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX);
-        double d = AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
-
-        return d%360;
-    }
-
     public double getRightReading() {
         return right;
     }
@@ -245,9 +237,9 @@ public class OdometerIMU extends Subsystem{
     }
 
     public double getHeadingOffset() {
-
         return headingOffset;
     }
+
     public double[] getPosition() {
 
         position[0] = x;

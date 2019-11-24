@@ -64,17 +64,7 @@ public class DriveTest extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
-
-        Driver.pointInDirection(90);
-        Driver.pointInDirection(180);
-        Driver.pointInDirection(0);
-
-        Driver.strafeToPointOrient(0, 20, 0, 2, 2);
-        Driver.strafeToPointOrient(0, -20, 0, 2, 2);
-        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(20, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(-20, 0, 0, 2, 2);
-        Driver.strafeToPointOrient(0, 0, 0, 2, 2);
+        Driver.strafeToPointOrient(30, 30, 0, 2, 2);
 
         //Make sure nothing is still using the thread
     }

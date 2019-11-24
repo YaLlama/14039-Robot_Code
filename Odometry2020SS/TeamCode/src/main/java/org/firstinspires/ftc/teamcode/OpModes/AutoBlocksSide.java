@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -37,12 +39,11 @@ public class AutoBlocksSide extends LinearOpMode {
     private SamplePipeline pipeline;
     private OpenCvCamera phoneCam;
 
+    private BNO055IMU Imu;
+    private BNO055IMU.Parameters Params;
+
     // Important Variables =========================================================================
     private int skyPosition;
-
-
-
-
 
     private void initialize(){
 
@@ -59,9 +60,22 @@ public class AutoBlocksSide extends LinearOpMode {
         intakeRight = hardwareMap.dcMotor.get("rightIntake");
 
         blockHook = hardwareMap.servo.get("blockHook");
-        blockHook.setPosition(1);
 
-        Adham = new Odometer2(RightFront, LeftFront, LeftBack, null, -1, -1, -1, this);
+        Params = new BNO055IMU.Parameters();
+        Params.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        Params.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        Params.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opMode
+        Params.loggingEnabled      = true;
+        Params.loggingTag          = "IMU";
+        Params.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        Imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        //==========================================================================================
+        Imu.initialize(Params);
+
+        blockHook.setPosition(0);
+
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, Imu, -1, -1, -1, this);
         Adham.initialize(0, 0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);
@@ -93,33 +107,58 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.update();
         //Start Autonomous period
 
-        Driver.strafeToPointOrient(-46, 0, 0, 1, 1);
-        telemetry.addData("X", Adham.getPosition()[0]);
-        telemetry.addData("y", Adham.getPosition()[1]);
-        telemetry.addData("H", Adham.getHeadingAbsoluteDeg());
-        telemetry.update();
-        delay(2000);
+        Driver.strafeToPointOrient(-40, -11, 0, 2, 1);
+        delay(10);
         scanSkystone();
-        telemetry.addData("pos", skyPosition);
+        phoneCam.closeCameraDevice();
+        delay(10);
 
-        delay(2000);
         if(skyPosition == 0) {
-            Driver.strafeToPointOrient(-85, -40, 0, 2, 1);
-            blockHook.setPosition(0.1);
+            Driver.strafeToPointOrient(-77, -47, 0, 2, 1);
+            blockHook.setPosition(0.6);
+            delay(300);
         }else if(skyPosition == 1) {
-            Driver.strafeToPointOrient(-85, -16, 0, 2, 1);
-            blockHook.setPosition(0.1);
+            Driver.strafeToPointOrient(-77, -31, 0, 2, 1);
+            blockHook.setPosition(0.6);
+            delay(300);
         }else if(skyPosition == 2) {
-            Driver.strafeToPointOrient(-85, 2, 0, 2, 1);
-            blockHook.setPosition(0.1);
+            Driver.strafeToPointOrient(-77, -7, 0, 2, 1);
+            blockHook.setPosition(0.6);
+            delay(300);
         }
+
+        Driver.strafeToPointOrient(-46, -73, 0, 2.5, 1.5);
+        Driver.strafeToPointOrient(-59, -129, 0, 2, 1);
+        blockHook.setPosition(0);
+
+        Driver.strafeToPointOrient(-46, -73, 0, 2.5, 1.5);
+        Driver.strafeToPointOrient(-35, 12, 0, 2, 1);
+
+        if(skyPosition == 0) {
+            Driver.strafeToPointOrient(-77, 9, 0, 2, 1);
+            blockHook.setPosition(0.6);
+            delay(300);
+        }else if(skyPosition == 1) {
+            Driver.strafeToPointOrient(-77, 30, 0, 2, 1);
+            blockHook.setPosition(0.6);
+            delay(300);
+        }else if(skyPosition == 2) {
+            Driver.strafeToPointOrient(-77, 51, 0, 2, 1);
+            blockHook.setPosition(0.6);
+            delay(300);
+        }
+
+        Driver.strafeToPointOrient(-38, -73, 0, 2, 1);
+        Driver.strafeToPointOrient(-59, -129, 0, 2, 1);
+        blockHook.setPosition(0);
+
+        // Park
+        Driver.strafeToPointOrient(-65, -97, 0, 2, 1);
 
         //Make sure nothing is still using the thread - End Autonomous period
     }
 
     private void scanSkystone(){
-        telemetry.addData("Scanning", "");
-        telemetry.update();
         skyPosition = pipeline.getSkystonePosition();
         if(skyPosition == 404) {
             scanSkystone();
@@ -127,11 +166,11 @@ public class AutoBlocksSide extends LinearOpMode {
     }
 
     private void delay(int millis) {
-        int limit = (int)(millis/2);
+        int limit = (int)(millis/4);
         for(int x=0;x<limit; x++) {
             if (opModeIsActive()) {
                 Driver.localize();
-                try{Thread.sleep(2);}catch(InterruptedException e){e.printStackTrace();}
+                try{Thread.sleep(4);}catch(InterruptedException e){e.printStackTrace();}
             }else {
                 break;
             }

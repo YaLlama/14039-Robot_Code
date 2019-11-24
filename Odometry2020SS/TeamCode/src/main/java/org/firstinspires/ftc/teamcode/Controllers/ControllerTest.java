@@ -1,18 +1,20 @@
 package org.firstinspires.ftc.teamcode.Controllers;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Odometry.OdometerRadians;
+import org.firstinspires.ftc.teamcode.Odometry.Odometer2;
 
 /*
 This is an OpMode to test out controllers.
- */
+*/
 
 @Autonomous(name="Controller Test", group="Linear Opmode")
-@Disabled
+
 public class ControllerTest extends LinearOpMode {
 
     // Declare OpMode members.
@@ -21,23 +23,38 @@ public class ControllerTest extends LinearOpMode {
     private DcMotor LeftFront;
     private DcMotor LeftBack;
 
-    private OdometerRadians Adham;
-    private PID pid;
+    private Odometer2 Adham;
+    private CustomMove thing;
+
+    private BNO055IMU Imu;
+    private BNO055IMU.Parameters Params;
 
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
         telemetry.update();
 
         // Initialize all objects declared above
-        RightFront = hardwareMap.dcMotor.get("RightEncoder");
-        LeftFront = hardwareMap.dcMotor.get("LeftEncoder");
-        LeftBack = hardwareMap.dcMotor.get("BackEncoder");
-        RightBack = hardwareMap.dcMotor.get("RightBack");
+        RightFront = hardwareMap.dcMotor.get("rightEncoder");
+        LeftFront = hardwareMap.dcMotor.get("leftEncoder");
+        LeftBack = hardwareMap.dcMotor.get("backEncoder");
+        RightBack = hardwareMap.dcMotor.get("rightBack");
 
-        Adham = new OdometerRadians(RightFront, LeftFront, LeftBack, -1, -1, -1, this);
-        Adham.initializeOdometry();
+        Params = new BNO055IMU.Parameters();
+        Params.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        Params.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        Params.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opMode
+        Params.loggingEnabled      = true;
+        Params.loggingTag          = "IMU";
+        Params.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        Imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        pid = new PID(0.016, 0.001, 0.01, 5, 0.4);
+        //==========================================================================================
+        Imu.initialize(Params);
+
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, Imu, -1, -1, -1, this);
+        Adham.initialize(0, 0, 0);
+
+        thing = new CustomMove(1);
 
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
@@ -60,7 +77,7 @@ public class ControllerTest extends LinearOpMode {
             current = Adham.getPosition()[0];
 
             telemetry.addData("current ", current);
-            telemetry.addData("correction ", pid.getCorrection(target, current));
+            telemetry.addData("correction ", thing.getCorrection(target, current));
             telemetry.update();
 
             Adham.updateOdometry();

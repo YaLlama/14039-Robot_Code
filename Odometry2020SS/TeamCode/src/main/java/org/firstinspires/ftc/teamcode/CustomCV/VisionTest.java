@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.CustomCV;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,8 +27,10 @@ public class VisionTest extends LinearOpMode {
     private String skystring;
 
     private Odometer2 Adham;
-
     private Drive Driver;
+
+    private BNO055IMU Imu;
+    private BNO055IMU.Parameters Params;
 
     private void initialize(){
         telemetry.addData("Status: ", "Initializing");
@@ -39,7 +43,19 @@ public class VisionTest extends LinearOpMode {
         LeftBack = hardwareMap.dcMotor.get("backEncoder");
         RightBack = hardwareMap.dcMotor.get("rightBack");
 
-        Adham = new Odometer2(RightFront, LeftFront, LeftBack, null, -1, -1, -1, this);
+        Params = new BNO055IMU.Parameters();
+        Params.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        Params.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        Params.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opMode
+        Params.loggingEnabled      = true;
+        Params.loggingTag          = "IMU";
+        Params.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        Imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        //==========================================================================================
+        Imu.initialize(Params);
+
+        Adham = new Odometer2(RightFront, LeftFront, LeftBack, Imu, -1, -1, -1, this);
         Adham.initialize(0, 0, 0);
 
         Driver = new Drive(LeftFront, RightFront, LeftBack, RightBack, Adham, this);

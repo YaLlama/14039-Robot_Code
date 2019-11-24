@@ -137,14 +137,14 @@ public class Odometer2 extends Subsystem{
             back = backEnc.getCurrentPosition() * encScale * backEncDir;
 
             // Calculates direction
-           // heading = getImuHeading() + headingOffset;
-            heading = getImuHeading();
+            // heading = getImuHeading() + headingOffset;
+            heading = Math.toRadians(getImuHeading());
+
             rightChange = right - rightLastVal;
             leftChange = left - leftLastVal;
             backChange = back - backLastVal;
 
             //Calculating the position-change-vector from Left+Right encoders
-
             headingChange = heading - headingLastVal;
 
             if(headingChange == 0) { // RobotHardware has gone straight/not moved
@@ -191,6 +191,7 @@ public class Odometer2 extends Subsystem{
             x = lastX + rotatedMovement[0];
             y = lastY + rotatedMovement[1];
 
+
         }
     }
 
@@ -202,6 +203,7 @@ public class Odometer2 extends Subsystem{
         rightLastVal = right;
         leftLastVal = left;
         backLastVal = back;
+
         headingLastVal = heading;
 
     }
@@ -217,7 +219,7 @@ public class Odometer2 extends Subsystem{
         Orientation angles = imu.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX);
         double d = AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
 
-        return d%360;
+        return d % 360;
     }
 
     public double getRightReading() {
@@ -240,33 +242,23 @@ public class Odometer2 extends Subsystem{
         return Math.toDegrees(heading);
     }
 
-    public double getHeadingLastVal() {
-        return headingLastVal;
-    }
-
     public double getHeadingAbsoluteDeg() {
         return Math.toDegrees(heading) % 360;
     }
 
-    public double getHeadingOffset() {
+    public double getHeadingLastVal() {
+        return headingLastVal;
+    }
 
+    public double getHeadingOffset() {
         return headingOffset;
     }
-    public double[] getPosition() {
 
-        position[0] = x;
-        position[1] = y;
+    public double[] getPosition() {
+        position[0] = Math.round(x);
+        position[1] = Math.round(y);
 
         return position;
-
-    }
-
-    public void setRobotRad(double turnAverage) {
-        robotRad = turnAverage * robotRad / 360;
-    }
-
-    public void setBackDistance(double backAverage) {
-        backRad = backAverage / 2 / Math.PI;
     }
 
     public double getRobotRad() {
