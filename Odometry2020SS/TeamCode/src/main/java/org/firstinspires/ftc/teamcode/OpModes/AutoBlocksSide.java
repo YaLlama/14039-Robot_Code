@@ -17,7 +17,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="Block Side Auto", group="Linear Opmode")
+@Autonomous(name="Red Depot Side Auto", group="Linear Opmode")
 
 public class AutoBlocksSide extends LinearOpMode {
 
@@ -106,54 +106,60 @@ public class AutoBlocksSide extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
         //Start Autonomous period
-
         Driver.strafeToPointOrient(-40, -11, 0, 2, 1);
-        delay(10);
+        delay(3);
         scanSkystone();
         phoneCam.closeCameraDevice();
+        delay(3);
+
+        if(skyPosition == 0) {
+            Driver.strafeToPointOrient(-80.5, -50.4, 0, 2, 1);
+            hookSkyStone();
+            delay(80);
+            Driver.moveByAmount(20, 0, 0);
+        }else if(skyPosition == 1) {
+            Driver.strafeToPointOrient(-80.5, -31, 0, 2, 1);
+            blockHook.setPosition(0.435);
+            delay(80);
+            Driver.moveByAmount(20, 0, 0);
+        }else if(skyPosition == 2) {
+            Driver.strafeToPointOrient(-80.5, -8.3, 0, 2, 1);
+            blockHook.setPosition(0.435);
+            delay(80);
+            Driver.moveByAmount(20, 0, 0);
+        }
+
+        Driver.strafeToPointOrient(-50, -145, 0, 2.5, 1);
+        Driver.strafeToPointOrient(-59, -145, 0, 2, 1);
+
+        blockHook.setPosition(0);
+
+        Driver.strafeToPointOrient(-55, -90, 0, 4, 1);
+
+        if(skyPosition == 0) {
+            Driver.strafeToPointOrient(-81, 9, 0, 2, 1);
+            blockHook.setPosition(0.435);
+            delay(80);
+            Driver.moveByAmount(20, 0, 0);
+        }else if(skyPosition == 1) {
+            Driver.strafeToPointOrient(-81, 30, 0, 2, 1);
+            blockHook.setPosition(0.435);
+            delay(80);
+            Driver.moveByAmount(20, 0, 0);
+        }else if(skyPosition == 2) {
+            Driver.strafeToPointOrient(-81, 51, 0, 2, 1);
+            blockHook.setPosition(0.435);
+            delay(80);
+            Driver.moveByAmount(20, 0, 0);
+        }
+
+        Driver.strafeToPointOrient(-50, -145, 0, 2, 1);
+        Driver.strafeToPointOrient(-60, -145, 0, 2, 1);
+
+        blockHook.setPosition(0);
         delay(10);
-
-        if(skyPosition == 0) {
-            Driver.strafeToPointOrient(-77, -47, 0, 2, 1);
-            blockHook.setPosition(0.6);
-            delay(300);
-        }else if(skyPosition == 1) {
-            Driver.strafeToPointOrient(-77, -31, 0, 2, 1);
-            blockHook.setPosition(0.6);
-            delay(300);
-        }else if(skyPosition == 2) {
-            Driver.strafeToPointOrient(-77, -7, 0, 2, 1);
-            blockHook.setPosition(0.6);
-            delay(300);
-        }
-
-        Driver.strafeToPointOrient(-46, -73, 0, 2.5, 1.5);
-        Driver.strafeToPointOrient(-59, -129, 0, 2, 1);
-        blockHook.setPosition(0);
-
-        Driver.strafeToPointOrient(-46, -73, 0, 2.5, 1.5);
-        Driver.strafeToPointOrient(-35, 12, 0, 2, 1);
-
-        if(skyPosition == 0) {
-            Driver.strafeToPointOrient(-77, 9, 0, 2, 1);
-            blockHook.setPosition(0.6);
-            delay(300);
-        }else if(skyPosition == 1) {
-            Driver.strafeToPointOrient(-77, 30, 0, 2, 1);
-            blockHook.setPosition(0.6);
-            delay(300);
-        }else if(skyPosition == 2) {
-            Driver.strafeToPointOrient(-77, 51, 0, 2, 1);
-            blockHook.setPosition(0.6);
-            delay(300);
-        }
-
-        Driver.strafeToPointOrient(-38, -73, 0, 2, 1);
-        Driver.strafeToPointOrient(-59, -129, 0, 2, 1);
-        blockHook.setPosition(0);
-
         // Park
-        Driver.strafeToPointOrient(-65, -97, 0, 2, 1);
+        Driver.strafeToPointOrient(-65, -92, 0, 2, 1);
 
         //Make sure nothing is still using the thread - End Autonomous period
     }
@@ -165,8 +171,27 @@ public class AutoBlocksSide extends LinearOpMode {
         }
     }
 
-    private void delay(int millis) {
-        int limit = (int)(millis/4);
+    private void hookSkyStone() {
+        boolean hooked = false;
+
+        double newPosition, oldPosition = 0;
+
+        while(!hooked) {
+
+            blockHook.setPosition(oldPosition + 0.2);
+            newPosition = blockHook.getPosition();
+
+            if(Math.abs(newPosition - oldPosition) < 0.1){
+                hooked = true;
+                blockHook.setPosition(oldPosition - 0.1);
+            }
+            oldPosition = newPosition;
+            delay(7);
+        }
+    }
+
+    private void delay(int time) {
+        int limit = (int)(time/4);
         for(int x=0;x<limit; x++) {
             if (opModeIsActive()) {
                 Driver.localize();

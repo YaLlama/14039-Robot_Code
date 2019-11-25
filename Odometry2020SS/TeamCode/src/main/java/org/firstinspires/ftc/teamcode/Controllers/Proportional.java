@@ -20,6 +20,10 @@ public class Proportional extends Controller {
 
     }
 
+    public void setpGain(double pGain) {
+        this.pGain = pGain;
+    }
+
     public double getCorrection(double target, double current) {
 
         error = target - current;

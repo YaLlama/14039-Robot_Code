@@ -152,19 +152,13 @@ public class Drive extends Subsystem {
 
         count = 0;
 
-        CustomMove holdX = new CustomMove(1);
-        CustomMove holdY = new CustomMove(1);
-        Proportional orient = new Proportional(0.02, 0.3, 0);
+        CustomMove move = new CustomMove(0.65);
 
-        //Proportional holdX = new Proportional(0.03, 0.5, 0.3);
-        //Proportional holdY = new Proportional(0.03, 0.5, 0.3);
-        //Proportional orient = new Proportional(0.02, 0.3, 0);
-        
         double Xdiff = x - Adhameter.getPosition()[0];
         double Ydiff = y - Adhameter.getPosition()[1];
         double distance = Math.sqrt(Xdiff * Xdiff + Ydiff * Ydiff);
         
-        while(distance > posThreshold || Math.abs(orient.getError()) > headThreshold) {
+        while(distance > posThreshold) {
             if (opmode.opModeIsActive()) {
                 
                 Xdiff = x - Adhameter.getPosition()[0];
@@ -176,9 +170,9 @@ public class Drive extends Subsystem {
                 double XD = cos(-h) * Xdiff - sin(-h) * Ydiff;
                 double YD = sin(-h) * Xdiff + cos(-h) * Ydiff;
                 
-                double hCorrect = orient.getCorrection(heading, h);
-                double xCorrect = holdX.getCorrection(0, XD);
-                double yCorrect = holdY.getCorrection(0, YD);
+                double hCorrect = move.getHeadingCorrect(heading, h);
+                double xCorrect = move.getPowerX(XD, YD);
+                double yCorrect = move.getPowerY(XD, YD);
                 
                 frontLeft.setPower(-xCorrect - yCorrect - hCorrect);
                 backLeft.setPower(xCorrect - yCorrect - hCorrect);
